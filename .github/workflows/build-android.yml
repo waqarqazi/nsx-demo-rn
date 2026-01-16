@@ -59,6 +59,9 @@ jobs:
           echo "APP_ENV=dev" >> .env
           echo "NODE_ENV=development" >> .env
 
+      - name: Make gradlew executable
+        run: chmod +x android/gradlew
+
       - name: Build Android Debug APK
         run: |
           cd android
@@ -107,6 +110,9 @@ jobs:
           cp .env.example .env || echo "Creating default .env"
           echo "APP_ENV=production" >> .env
           echo "NODE_ENV=production" >> .env
+
+      - name: Make gradlew executable
+        run: chmod +x android/gradlew
 
       - name: Setup Android Keystore
         if: github.ref == 'refs/heads/main'
