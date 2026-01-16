@@ -5,14 +5,18 @@ This directory contains CI/CD workflows for the Travel App project.
 ## Workflow Files
 
 ### 1. `tests.yml` - Testing Workflow
+
 **Purpose**: Run all tests (unit tests, linting, type checking, E2E tests)
 
 **Triggers**:
+
 - Push to `main` or `dev` branches
 - Pull requests to `main` or `dev` branches
 
 **Jobs**:
+
 - **unit-tests**: Runs on `ubuntu-latest`
+
   - ESLint
   - Prettier format check
   - TypeScript type checking
@@ -24,14 +28,18 @@ This directory contains CI/CD workflows for the Travel App project.
   - Runs Detox E2E tests
 
 ### 2. `build-android.yml` - Android Build Workflow
+
 **Purpose**: Build Android APK/AAB files for dev and production
 
 **Triggers**:
+
 - Push to `main` or `dev` branches (when Android-related files change)
 - Manual workflow dispatch with options
 
 **Jobs**:
+
 - **build-android-dev**: Builds debug APK for `dev` branch
+
   - Creates debug build
   - Uploads APK artifact (retention: 7 days)
   - Sets environment to `dev`
@@ -44,20 +52,25 @@ This directory contains CI/CD workflows for the Travel App project.
   - Sets environment to `production`
 
 **Required Secrets** (for production builds):
+
 - `ANDROID_KEYSTORE_BASE64`: Base64 encoded keystore file
 - `ANDROID_KEYSTORE_PASSWORD`: Keystore password
 - `ANDROID_KEY_ALIAS`: Key alias
 - `ANDROID_KEY_PASSWORD`: Key password
 
 ### 3. `build-ios.yml` - iOS Build Workflow
+
 **Purpose**: Build iOS IPA files for dev and production
 
 **Triggers**:
+
 - Push to `main` or `dev` branches (when iOS-related files change)
 - Manual workflow dispatch with options
 
 **Jobs**:
+
 - **build-ios-dev**: Builds debug IPA for `dev` branch
+
   - Creates debug build for simulator
   - Uploads IPA artifact (retention: 7 days)
   - Sets environment to `dev`
@@ -70,6 +83,7 @@ This directory contains CI/CD workflows for the Travel App project.
   - Sets environment to `production`
 
 **Required Secrets** (for production builds):
+
 - `APPLE_CERTIFICATE_BASE64`: Base64 encoded .p12 certificate
 - `APPLE_CERTIFICATE_PASSWORD`: Certificate password
 - `APPLE_PROVISIONING_PROFILE_BASE64`: Base64 encoded provisioning profile
@@ -77,6 +91,7 @@ This directory contains CI/CD workflows for the Travel App project.
 ## Branch Strategy
 
 ### `dev` Branch (Testing)
+
 - **Purpose**: Development and testing
 - **Builds**: Debug builds
 - **Artifacts**: Retained for 7 days
@@ -84,6 +99,7 @@ This directory contains CI/CD workflows for the Travel App project.
 - **Environment**: Development
 
 ### `main` Branch (Production)
+
 - **Purpose**: Production releases
 - **Builds**: Release builds (signed)
 - **Artifacts**: Retained for 30 days
@@ -107,15 +123,17 @@ All workflows support manual triggering with options:
 ### For Android Production Builds
 
 1. Generate a keystore:
+
    ```bash
    keytool -genkeypair -v -storetype PKCS12 -keystore my-release-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
    ```
 
 2. Encode keystore to base64:
+
    ```bash
    # On macOS/Linux
    base64 -i my-release-key.keystore -o keystore-base64.txt
-   
+
    # On Windows (PowerShell)
    [Convert]::ToBase64String([IO.File]::ReadAllBytes("my-release-key.keystore")) | Out-File keystore-base64.txt
    ```
@@ -132,6 +150,7 @@ All workflows support manual triggering with options:
 
 1. Export certificate and provisioning profile from Xcode
 2. Encode to base64:
+
    ```bash
    base64 -i certificate.p12 -o certificate-base64.txt
    base64 -i profile.mobileprovision -o profile-base64.txt
@@ -169,6 +188,7 @@ build-ios.yml (runs independently)
 ## Environment Variables
 
 Workflows automatically set environment variables:
+
 - `APP_ENV`: `dev` or `production`
 - `NODE_ENV`: `development` or `production`
 - `BUILD_TYPE`: `debug` or `release`

@@ -4,33 +4,26 @@
  * Optimized with React.memo, useCallback, and useMemo
  */
 
-import React, { useCallback, useMemo } from 'react';
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  Image,
-  FlatList,
-  ListRenderItem,
-} from 'react-native';
+import React, { useCallback } from 'react';
+import { View, StyleSheet, ScrollView, FlatList, ListRenderItem } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import FastImage from 'react-native-fast-image';
 import { Text, Card, Button, LoadingSpinner } from '@shared/components';
 import { colors, spacing } from '@theme/index';
 import { useTripDetails } from '../hooks/useTripDetails';
 import { formatCurrency, formatDate, formatDuration } from '@shared/utils/format';
 import { Image as ImageType } from '@shared/types';
+import { RootStackParamList } from '../../../navigation/types';
 
-interface TripDetailsScreenProps {
-  navigation: any;
-  route: any;
-}
+type TripDetailsScreenRouteProp = RouteProp<RootStackParamList, 'TripDetails'>;
+type TripDetailsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
-  const tripId = route.params?.tripId as string;
+const TripDetailsScreen: React.FC = () => {
+  const navigation = useNavigation<TripDetailsScreenNavigationProp>();
+  const route = useRoute<TripDetailsScreenRouteProp>();
+  const tripId = route.params.tripId;
 
   const { data: trip, isLoading, error } = useTripDetails(tripId);
 
@@ -77,11 +70,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
           <Text variant="h3" color="error" align="center">
             Failed to load trip details
           </Text>
-          <Button
-            title="Go Back"
-            onPress={() => navigation.goBack()}
-            style={styles.backButton}
-          />
+          <Button title="Go Back" onPress={() => navigation.goBack()} style={styles.backButton} />
         </View>
       </SafeAreaView>
     );
@@ -92,8 +81,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}
-      >
+        showsVerticalScrollIndicator={false}>
         {trip.images && trip.images.length > 0 && (
           <FlatList
             data={trip.images}
@@ -170,7 +158,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
           {trip.included && trip.included.length > 0 && (
             <Card style={styles.includedCard}>
               <Text variant="body" weight="semibold" style={styles.sectionTitle}>
-                What's included
+                What&apos;s included
               </Text>
               {trip.included.map((item, index) => (
                 <Text key={index} variant="body" color="textLight" style={styles.listItem}>
@@ -183,7 +171,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
           {trip.excluded && trip.excluded.length > 0 && (
             <Card style={styles.excludedCard}>
               <Text variant="body" weight="semibold" style={styles.sectionTitle}>
-                What's not included
+                What&apos;s not included
               </Text>
               {trip.excluded.map((item, index) => (
                 <Text key={index} variant="body" color="textLight" style={styles.listItem}>
@@ -208,47 +196,15 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
+  backButton: {
+    marginTop: spacing.lg,
   },
-  scrollView: {
+  container: {
+    backgroundColor: colors.background,
     flex: 1,
   },
   content: {
     paddingBottom: 100,
-  },
-  imageList: {
-    height: 300,
-  },
-  image: {
-    width: 400,
-    height: 300,
-  },
-  details: {
-    padding: spacing.lg,
-  },
-  title: {
-    marginBottom: spacing.md,
-  },
-  meta: {
-    marginBottom: spacing.lg,
-    gap: spacing.sm,
-  },
-  priceCard: {
-    marginBottom: spacing.md,
-  },
-  priceRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  price: {
-    color: colors.primary,
-    marginTop: spacing.xs,
-  },
-  duration: {
-    alignItems: 'flex-end',
   },
   datesCard: {
     marginBottom: spacing.md,
@@ -256,36 +212,68 @@ const styles = StyleSheet.create({
   descriptionCard: {
     marginBottom: spacing.md,
   },
-  includedCard: {
-    marginBottom: spacing.md,
+  details: {
+    padding: spacing.lg,
+  },
+  duration: {
+    alignItems: 'flex-end',
+  },
+  errorContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    padding: spacing.xl,
   },
   excludedCard: {
     marginBottom: spacing.md,
   },
-  sectionTitle: {
-    marginBottom: spacing.sm,
+  footer: {
+    backgroundColor: colors.background,
+    borderTopColor: colors.border,
+    borderTopWidth: 1,
+    bottom: 0,
+    left: 0,
+    padding: spacing.lg,
+    position: 'absolute',
+    right: 0,
+  },
+  image: {
+    height: 300,
+    width: 400,
+  },
+  imageList: {
+    height: 300,
+  },
+  includedCard: {
+    marginBottom: spacing.md,
   },
   listItem: {
     marginBottom: spacing.xs,
   },
-  footer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: spacing.lg,
-    backgroundColor: colors.background,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
+  meta: {
+    gap: spacing.sm,
+    marginBottom: spacing.lg,
   },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
+  price: {
+    color: colors.primary,
+    marginTop: spacing.xs,
+  },
+  priceCard: {
+    marginBottom: spacing.md,
+  },
+  priceRow: {
     alignItems: 'center',
-    padding: spacing.xl,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-  backButton: {
-    marginTop: spacing.lg,
+  scrollView: {
+    flex: 1,
+  },
+  sectionTitle: {
+    marginBottom: spacing.sm,
+  },
+  title: {
+    marginBottom: spacing.md,
   },
 });
 

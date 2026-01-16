@@ -36,22 +36,15 @@ export const getBookings = async (
  * Fetch booking details
  */
 export const getBookingDetails = async (bookingId: string): Promise<Booking> => {
-  const response = await apiClient.get<ApiResponse<Booking>>(
-    endpoints.bookings.detail(bookingId),
-  );
+  const response = await apiClient.get<ApiResponse<Booking>>(endpoints.bookings.detail(bookingId));
   return response.data.data;
 };
 
 /**
  * Create a new booking
  */
-export const createBooking = async (
-  params: CreateBookingParams,
-): Promise<Booking> => {
-  const response = await apiClient.post<ApiResponse<Booking>>(
-    endpoints.bookings.create,
-    params,
-  );
+export const createBooking = async (params: CreateBookingParams): Promise<Booking> => {
+  const response = await apiClient.post<ApiResponse<Booking>>(endpoints.bookings.create, params);
   return response.data.data;
 };
 

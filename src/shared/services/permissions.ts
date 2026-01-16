@@ -68,10 +68,10 @@ export const checkLocationPermission = async (): Promise<boolean> => {
 export const getCurrentLocation = (): Promise<Geolocation.GeoPosition> => {
   return new Promise((resolve, reject) => {
     Geolocation.getCurrentPosition(
-      (position) => {
+      position => {
         resolve(position);
       },
-      (error) => {
+      error => {
         reject(error);
       },
       {

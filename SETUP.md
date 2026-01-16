@@ -20,6 +20,7 @@ cd ..
 ### 3. Android Setup
 
 Ensure you have:
+
 - Android Studio installed
 - Android SDK configured
 - Java JDK 17 installed
@@ -60,16 +61,19 @@ Sentry.init({
 ### 6. Configure CodePush
 
 1. Install CodePush CLI:
+
 ```bash
 npm install -g code-push-cli
 ```
 
 2. Login:
+
 ```bash
 code-push login
 ```
 
 3. Register apps:
+
 ```bash
 code-push app add NsxDemo-ios
 code-push app add NsxDemo-android
@@ -179,6 +183,7 @@ cd android
 ### TypeScript Path Alias Issues
 
 If TypeScript doesn't recognize path aliases:
+
 1. Restart TypeScript server in your IDE
 2. Ensure `tsconfig.json` paths are correct
 3. Check `babel.config.js` and `metro.config.js` aliases match

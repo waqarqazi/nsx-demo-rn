@@ -20,9 +20,7 @@ export const getFeaturedTrips = async (): Promise<Trip[]> => {
  * Fetch popular destinations
  */
 export const getPopularDestinations = async (): Promise<Destination[]> => {
-  const response = await apiClient.get<ApiResponse<Destination[]>>(
-    endpoints.destinations.popular,
-  );
+  const response = await apiClient.get<ApiResponse<Destination[]>>(endpoints.destinations.popular);
   return response.data.data;
 };
 

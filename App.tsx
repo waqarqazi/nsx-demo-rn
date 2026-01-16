@@ -6,7 +6,7 @@
  */
 
 import React, { useEffect } from 'react';
-import { StatusBar, useColorScheme } from 'react-native';
+import { StatusBar, useColorScheme, StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -35,7 +35,7 @@ function App(): React.JSX.Element {
   }, []);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={styles.container}>
       <SafeAreaProvider>
         <ReduxProvider store={store}>
           <QueryClientProvider client={queryClient}>
@@ -51,6 +51,12 @@ function App(): React.JSX.Element {
     </GestureHandlerRootView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 // App export - CodePush can be added later when configured
 export default App;
