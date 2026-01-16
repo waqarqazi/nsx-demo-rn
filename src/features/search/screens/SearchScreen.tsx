@@ -14,22 +14,22 @@ import {
   ListRenderItem,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Text, Card, LoadingSpinner } from '@shared/components';
 import { colors, spacing } from '@theme/index';
 import { useSearchTrips, useSearchDestinations } from '../hooks/useSearch';
 import { Trip, Destination } from '@shared/types/travel';
 import { formatCurrency, formatDate } from '@shared/utils/format';
+import { TabParamList, RootStackParamList } from '../../../navigation/types';
 
-interface SearchScreenProps {
-  navigation: any;
-  route: any;
-}
+type SearchScreenRouteProp = RouteProp<TabParamList, 'Search'>;
+type SearchScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-const SearchScreen: React.FC<SearchScreenProps> = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
-  const initialDestinationId = route.params?.destinationId as string | undefined;
+const SearchScreen: React.FC = () => {
+  const navigation = useNavigation<SearchScreenNavigationProp>();
+  const route = useRoute<SearchScreenRouteProp>();
+  const initialDestinationId = route.params?.destinationId;
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTab, setSelectedTab] = useState<'trips' | 'destinations'>('trips');
@@ -66,7 +66,7 @@ const SearchScreen: React.FC<SearchScreenProps> = () => {
   const handleDestinationPress = useCallback(
     (destinationId: string) => {
       setSearchQuery('');
-      navigation.navigate('Search', { destinationId });
+      navigation.navigate('MainTabs', { screen: 'Search', params: { destinationId } });
       setSelectedTab('trips');
     },
     [navigation],
@@ -166,17 +166,31 @@ const SearchScreen: React.FC<SearchScreenProps> = () => {
       {isLoading ? (
         <LoadingSpinner fullScreen message="Searching..." />
       ) : hasResults ? (
-        <FlatList
-          data={results}
-          renderItem={selectedTab === 'trips' ? renderTripItem : renderDestinationItem}
-          keyExtractor={selectedTab === 'trips' ? tripKeyExtractor : destinationKeyExtractor}
-          contentContainerStyle={styles.results}
-          showsVerticalScrollIndicator={false}
-          removeClippedSubviews
-          initialNumToRender={10}
-          maxToRenderPerBatch={10}
-          windowSize={10}
-        />
+        selectedTab === 'trips' ? (
+          <FlatList<Trip>
+            data={tripsData?.items || []}
+            renderItem={renderTripItem}
+            keyExtractor={tripKeyExtractor}
+            contentContainerStyle={styles.results}
+            showsVerticalScrollIndicator={false}
+            removeClippedSubviews
+            initialNumToRender={10}
+            maxToRenderPerBatch={10}
+            windowSize={10}
+          />
+        ) : (
+          <FlatList<Destination>
+            data={destinationsData?.items || []}
+            renderItem={renderDestinationItem}
+            keyExtractor={destinationKeyExtractor}
+            contentContainerStyle={styles.results}
+            showsVerticalScrollIndicator={false}
+            removeClippedSubviews
+            initialNumToRender={10}
+            maxToRenderPerBatch={10}
+            windowSize={10}
+          />
+        )
       ) : (
         <View style={styles.emptyState}>
           <Text variant="h3" color="textLight" align="center">

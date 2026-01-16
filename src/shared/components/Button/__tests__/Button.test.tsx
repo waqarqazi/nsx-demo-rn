@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import { Button } from '../Button';
+import Button from '../Button';
 
 describe('Button Component', () => {
   it('renders correctly', () => {

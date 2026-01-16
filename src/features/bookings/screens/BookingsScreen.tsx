@@ -15,22 +15,22 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Text, Card, Button, LoadingSpinner } from '@shared/components';
 import { colors, spacing } from '@theme/index';
 import { useBookings, useCreateBooking, useCancelBooking } from '../hooks/useBookings';
 import { Booking } from '@shared/types/travel';
 import { formatCurrency, formatDate } from '@shared/utils/format';
+import { TabParamList, RootStackParamList } from '../../../navigation/types';
 
-interface BookingsScreenProps {
-  navigation: any;
-  route: any;
-}
+type BookingsScreenRouteProp = RouteProp<TabParamList, 'Bookings'>;
+type BookingsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-const BookingsScreen: React.FC<BookingsScreenProps> = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
-  const tripId = route.params?.tripId as string | undefined;
+const BookingsScreen: React.FC = () => {
+  const navigation = useNavigation<BookingsScreenNavigationProp>();
+  const route = useRoute<BookingsScreenRouteProp>();
+  const tripId = route.params?.tripId;
 
   const [guests, setGuests] = useState('1');
   const [checkInDate, setCheckInDate] = useState('');
@@ -270,7 +270,7 @@ const BookingsScreen: React.FC<BookingsScreenProps> = () => {
           </Text>
           <Button
             title="Explore Trips"
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation.navigate('MainTabs', { screen: 'Home' })}
             style={styles.exploreButton}
           />
         </View>

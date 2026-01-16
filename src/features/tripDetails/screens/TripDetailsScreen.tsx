@@ -7,23 +7,23 @@
 import React, { useCallback } from 'react';
 import { View, StyleSheet, ScrollView, FlatList, ListRenderItem } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import FastImage from 'react-native-fast-image';
 import { Text, Card, Button, LoadingSpinner } from '@shared/components';
 import { colors, spacing } from '@theme/index';
 import { useTripDetails } from '../hooks/useTripDetails';
 import { formatCurrency, formatDate, formatDuration } from '@shared/utils/format';
 import { Image as ImageType } from '@shared/types';
+import { RootStackParamList } from '../../../navigation/types';
 
-interface TripDetailsScreenProps {
-  navigation: any;
-  route: any;
-}
+type TripDetailsScreenRouteProp = RouteProp<RootStackParamList, 'TripDetails'>;
+type TripDetailsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
-  const tripId = route.params?.tripId as string;
+const TripDetailsScreen: React.FC = () => {
+  const navigation = useNavigation<TripDetailsScreenNavigationProp>();
+  const route = useRoute<TripDetailsScreenRouteProp>();
+  const tripId = route.params.tripId;
 
   const { data: trip, isLoading, error } = useTripDetails(tripId);
 
