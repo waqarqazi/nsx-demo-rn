@@ -24,7 +24,8 @@ jest.mock('react-native-gesture-handler', () => {
   const React = require('react');
   const { View } = require('react-native');
   return {
-    GestureHandlerRootView: ({ children, ...props }: any) => React.createElement(View, props, children),
+    GestureHandlerRootView: ({ children, ...props }: any) =>
+      React.createElement(View, props, children),
     Swipeable: View,
     DrawerLayout: View,
     State: {},
