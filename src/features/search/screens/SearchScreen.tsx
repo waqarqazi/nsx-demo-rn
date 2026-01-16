@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
   },
   tab: {
-    borderBottomColor: 'transparent',
+    borderBottomColor: colors.background,
     borderBottomWidth: 2,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,

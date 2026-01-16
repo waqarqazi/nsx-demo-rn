@@ -14,6 +14,11 @@ import { TabParamList } from './types';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
+// Icon components defined outside render to avoid nested component warnings
+const HomeIcon = () => <Text>🏠</Text>;
+const SearchIcon = () => <Text>🔍</Text>;
+const BookingsIcon = () => <Text>📋</Text>;
+
 const TabNavigator: React.FC = () => {
   return (
     <Tab.Navigator
@@ -32,7 +37,7 @@ const TabNavigator: React.FC = () => {
         component={HomeScreen}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: () => <Text>🏠</Text>,
+          tabBarIcon: HomeIcon,
         }}
       />
       <Tab.Screen
@@ -40,7 +45,7 @@ const TabNavigator: React.FC = () => {
         component={SearchScreen}
         options={{
           tabBarLabel: 'Search',
-          tabBarIcon: () => <Text>🔍</Text>,
+          tabBarIcon: SearchIcon,
         }}
       />
       <Tab.Screen
@@ -48,7 +53,7 @@ const TabNavigator: React.FC = () => {
         component={BookingsScreen}
         options={{
           tabBarLabel: 'Bookings',
-          tabBarIcon: () => <Text>📋</Text>,
+          tabBarIcon: BookingsIcon,
         }}
       />
     </Tab.Navigator>
