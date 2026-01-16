@@ -3,7 +3,7 @@ module.exports = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|@react-navigation|@tanstack|@reduxjs)/)',
+    'node_modules/(?!(react-native|@react-native|@react-navigation|@tanstack|@reduxjs|react-redux|immer)/)',
   ],
   moduleNameMapper: {
     '^@features/(.*)$': '<rootDir>/src/features/$1',
