@@ -23,6 +23,13 @@ target 'NsxDemo' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  # Enable modular headers for Firebase dependencies
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'FirebaseInstallations', :modular_headers => true
+  pod 'GoogleDataTransport', :modular_headers => true
+  pod 'nanopb', :modular_headers => true
+
   post_install do |installer|
     react_native_post_install(
       installer,
@@ -31,7 +38,7 @@ target 'NsxDemo' do
       # :ccache_enabled => true
     )
     
-    # Enable modular headers for Firebase pods to fix Swift pod integration
+    # Ensure modular headers are enabled for Firebase pods
     installer.pods_project.targets.each do |target|
       if ['GoogleUtilities', 'FirebaseCore', 'FirebaseInstallations', 'GoogleDataTransport', 'nanopb'].include?(target.name)
         target.build_configurations.each do |config|
