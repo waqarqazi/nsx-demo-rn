@@ -19,8 +19,7 @@ const AppNavigator: React.FC = () => {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-        }}
-      >
+        }}>
         <Stack.Screen name="MainTabs" component={TabNavigator} />
         <Stack.Screen
           name="TripDetails"

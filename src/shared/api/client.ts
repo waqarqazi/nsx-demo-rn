@@ -47,7 +47,7 @@ apiClient.interceptors.request.use(
  * Handles common errors and transforms responses
  */
 apiClient.interceptors.response.use(
-  (response) => {
+  response => {
     return response;
   },
   async (error: AxiosError<ApiError>) => {

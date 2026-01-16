@@ -57,12 +57,14 @@ src/
 ### 1. Feature-Based Organization
 
 Each feature is self-contained with:
+
 - **Screens**: UI components
 - **Hooks**: React Query hooks for data fetching
 - **Services**: API service functions
 - **State**: Redux slices (if needed for cross-feature state)
 
 **Benefits:**
+
 - Easy to locate feature-specific code
 - Simple to add/remove features
 - Teams can work independently on features
@@ -78,6 +80,7 @@ Each feature is self-contained with:
 ### 3. Shared Modules
 
 Shared code is isolated in the `shared/` directory:
+
 - **Components**: Reusable UI components
 - **Utils**: Utility functions
 - **API**: API client configuration
@@ -89,11 +92,13 @@ Shared code is isolated in the `shared/` directory:
 ### Redux Toolkit (Global State)
 
 Used for:
+
 - Authentication state
 - User profile
 - Cross-feature state
 
 **Example:**
+
 ```typescript
 // src/features/auth/state/authSlice.ts
 const authSlice = createSlice({
@@ -108,12 +113,14 @@ const authSlice = createSlice({
 ### React Query (Server State)
 
 Used for:
+
 - API data fetching
 - Caching
 - Synchronization
 - Background updates
 
 **Example:**
+
 ```typescript
 // src/features/home/hooks/useHomeData.ts
 export const useFeaturedTrips = () => {
@@ -145,11 +152,13 @@ UI Update
 ## Performance Optimizations
 
 ### Component Level
+
 - `React.memo` for preventing unnecessary re-renders
 - `useCallback` for memoizing callbacks
 - `useMemo` for memoizing computed values
 
 ### List Rendering
+
 - `FlatList` with optimized props:
   - `keyExtractor`
   - `getItemLayout`
@@ -158,17 +167,20 @@ UI Update
   - `maxToRenderPerBatch`
 
 ### Image Loading
+
 - `react-native-fast-image` for optimized image loading
 - Lazy loading for off-screen images
 
 ## Type Safety
 
 ### TypeScript Configuration
+
 - Strict mode enabled
 - Path aliases configured
 - Full type coverage
 
 ### Type Definitions
+
 - Shared types in `shared/types/`
 - Feature-specific types in feature directories
 - API response types
@@ -176,16 +188,19 @@ UI Update
 ## Testing Strategy
 
 ### Unit Tests (Jest)
+
 - Component tests with React Native Testing Library
 - Service function tests
 - Utility function tests
 
 ### E2E Tests (Detox)
+
 - Critical user flows
 - Navigation tests
 - Integration tests
 
 ### Test Coverage
+
 - Target: 70% coverage
 - Focus on critical paths
 - Business logic coverage

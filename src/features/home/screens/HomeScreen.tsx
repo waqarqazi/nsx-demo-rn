@@ -5,13 +5,7 @@
  */
 
 import React, { useCallback } from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  RefreshControl,
-  ListRenderItem,
-} from 'react-native';
+import { View, StyleSheet, FlatList, RefreshControl, ListRenderItem } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, Card, LoadingSpinner, Button } from '@shared/components';
 import { colors, spacing } from '@theme/index';
@@ -69,8 +63,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
       <Card
         style={styles.tripCard}
         onPress={() => handleTripPress(item.id)}
-        testID={`trip-card-${item.id}`}
-      >
+        testID={`trip-card-${item.id}`}>
         <Text variant="h3" style={styles.tripTitle}>
           {item.destination.name}
         </Text>
@@ -95,8 +88,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
       <Card
         style={styles.destinationCard}
         onPress={() => handleDestinationPress(item.id)}
-        testID={`destination-card-${item.id}`}
-      >
+        testID={`destination-card-${item.id}`}>
         <Text variant="h3" style={styles.destinationTitle}>
           {item.name}
         </Text>
@@ -206,9 +198,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             )}
           </View>
         }
-        refreshControl={
-          <RefreshControl refreshing={isRefetching} onRefresh={handleRefresh} />
-        }
+        refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={handleRefresh} />}
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       />

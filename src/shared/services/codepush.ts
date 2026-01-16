@@ -65,7 +65,7 @@ export const syncCodePush = () => {
         mandatoryContinueButtonLabel: 'Update',
       },
     },
-    (status) => {
+    status => {
       // Handle sync status
       console.log('CodePush sync status:', status);
     },

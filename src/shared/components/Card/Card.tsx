@@ -22,8 +22,7 @@ const Card: React.FC<CardProps> = ({ children, style, onPress, testID }) => {
       style={[styles.card, style]}
       onPress={onPress}
       activeOpacity={onPress ? 0.7 : 1}
-      testID={testID}
-    >
+      testID={testID}>
       {children}
     </Container>
   );

@@ -53,6 +53,7 @@ APP_VERSION=0.0.1
 ### 3. Environment-Specific Files
 
 You can create environment-specific files:
+
 - `.env.development` - Development environment
 - `.env.staging` - Staging environment
 - `.env.production` - Production environment
@@ -67,7 +68,7 @@ To use a specific environment file, update the `path` in `babel.config.js`:
     path: '.env.production', // Change this for production
     // ...
   },
-]
+];
 ```
 
 Or use a script to switch environments:
@@ -122,47 +123,47 @@ The `src/shared/config/env.ts` file provides helper functions:
 
 ### API Configuration
 
-| Variable | Type | Default | Description |
-|----------|------|---------|-------------|
-| `API_BASE_URL` | string | `https://api.travel-demo.com/v1` | Base URL for API requests |
-| `API_TIMEOUT` | number | `30000` | API request timeout in milliseconds |
+| Variable       | Type   | Default                          | Description                         |
+| -------------- | ------ | -------------------------------- | ----------------------------------- |
+| `API_BASE_URL` | string | `https://api.travel-demo.com/v1` | Base URL for API requests           |
+| `API_TIMEOUT`  | number | `30000`                          | API request timeout in milliseconds |
 
 ### Environment
 
-| Variable | Type | Default | Description |
-|----------|------|---------|-------------|
-| `NODE_ENV` | string | `development` | Node environment (development/production) |
-| `APP_ENV` | string | `development` | App environment (development/staging/production) |
+| Variable   | Type   | Default       | Description                                      |
+| ---------- | ------ | ------------- | ------------------------------------------------ |
+| `NODE_ENV` | string | `development` | Node environment (development/production)        |
+| `APP_ENV`  | string | `development` | App environment (development/staging/production) |
 
 ### Monitoring & Analytics
 
-| Variable | Type | Default | Description |
-|----------|------|---------|-------------|
-| `SENTRY_DSN` | string | `` | Sentry DSN for error tracking |
-| `SENTRY_ENABLED` | boolean | `false` | Enable/disable Sentry |
-| `SENTRY_TRACES_SAMPLE_RATE` | number | `1.0` | Sentry traces sample rate (0.0-1.0) |
-| `ENABLE_ANALYTICS` | boolean | `false` | Enable/disable analytics |
-| `ENABLE_CRASHLYTICS` | boolean | `false` | Enable/disable Crashlytics |
+| Variable                    | Type    | Default | Description                         |
+| --------------------------- | ------- | ------- | ----------------------------------- |
+| `SENTRY_DSN`                | string  | ``      | Sentry DSN for error tracking       |
+| `SENTRY_ENABLED`            | boolean | `false` | Enable/disable Sentry               |
+| `SENTRY_TRACES_SAMPLE_RATE` | number  | `1.0`   | Sentry traces sample rate (0.0-1.0) |
+| `ENABLE_ANALYTICS`          | boolean | `false` | Enable/disable analytics            |
+| `ENABLE_CRASHLYTICS`        | boolean | `false` | Enable/disable Crashlytics          |
 
 ### Firebase
 
-| Variable | Type | Default | Description |
-|----------|------|---------|-------------|
+| Variable           | Type    | Default | Description             |
+| ------------------ | ------- | ------- | ----------------------- |
 | `FIREBASE_ENABLED` | boolean | `false` | Enable/disable Firebase |
 
 ### CodePush
 
-| Variable | Type | Default | Description |
-|----------|------|---------|-------------|
-| `CODEPUSH_IOS_DEPLOYMENT_KEY` | string | `` | CodePush iOS deployment key |
-| `CODEPUSH_ANDROID_DEPLOYMENT_KEY` | string | `` | CodePush Android deployment key |
+| Variable                          | Type   | Default | Description                     |
+| --------------------------------- | ------ | ------- | ------------------------------- |
+| `CODEPUSH_IOS_DEPLOYMENT_KEY`     | string | ``      | CodePush iOS deployment key     |
+| `CODEPUSH_ANDROID_DEPLOYMENT_KEY` | string | ``      | CodePush Android deployment key |
 
 ### App Configuration
 
-| Variable | Type | Default | Description |
-|----------|------|---------|-------------|
-| `APP_NAME` | string | `Travel App` | Application name |
-| `APP_VERSION` | string | `0.0.1` | Application version |
+| Variable      | Type   | Default      | Description         |
+| ------------- | ------ | ------------ | ------------------- |
+| `APP_NAME`    | string | `Travel App` | Application name    |
+| `APP_VERSION` | string | `0.0.1`      | Application version |
 
 ## Security Best Practices
 
@@ -177,11 +178,13 @@ The `src/shared/config/env.ts` file provides helper functions:
 ### Environment variables not loading
 
 1. **Clear Metro cache:**
+
    ```bash
    npm start -- --reset-cache
    ```
 
 2. **Rebuild the app:**
+
    ```bash
    # iOS
    cd ios && pod install && cd ..
@@ -198,6 +201,7 @@ The `src/shared/config/env.ts` file provides helper functions:
 ### TypeScript errors
 
 If you see TypeScript errors related to `@env`:
+
 1. Ensure `src/shared/config/env.d.ts` exists
 2. Restart TypeScript server in your IDE
 3. Check that `@env` module is properly declared
@@ -205,6 +209,7 @@ If you see TypeScript errors related to `@env`:
 ## Example: Different Environments
 
 ### Development (.env.development)
+
 ```env
 API_BASE_URL=http://localhost:3000/api
 NODE_ENV=development
@@ -212,6 +217,7 @@ SENTRY_ENABLED=false
 ```
 
 ### Staging (.env.staging)
+
 ```env
 API_BASE_URL=https://api-staging.travel-demo.com/v1
 NODE_ENV=production
@@ -221,6 +227,7 @@ SENTRY_DSN=your_staging_sentry_dsn
 ```
 
 ### Production (.env.production)
+
 ```env
 API_BASE_URL=https://api.travel-demo.com/v1
 NODE_ENV=production
@@ -236,15 +243,18 @@ ENABLE_CRASHLYTICS=true
 Environment variables are used in:
 
 1. **API Client** (`src/shared/api/client.ts`)
+
    - `API_BASE_URL` - Base URL for API requests
    - `API_TIMEOUT` - Request timeout
 
 2. **Monitoring** (`src/shared/services/monitoring.ts`)
+
    - `SENTRY_DSN` - Sentry configuration
    - `SENTRY_ENABLED` - Enable/disable Sentry
    - `ENABLE_CRASHLYTICS` - Enable/disable Crashlytics
 
 3. **CodePush** (`src/shared/services/codepush.ts`)
+
    - `CODEPUSH_IOS_DEPLOYMENT_KEY` - iOS deployment key
    - `CODEPUSH_ANDROID_DEPLOYMENT_KEY` - Android deployment key
 

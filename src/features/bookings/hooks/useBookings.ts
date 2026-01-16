@@ -82,8 +82,13 @@ export const useUpdateBooking = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ bookingId, updates }: { bookingId: string; updates: Partial<CreateBookingParams> }) =>
-      updateBooking(bookingId, updates),
+    mutationFn: ({
+      bookingId,
+      updates,
+    }: {
+      bookingId: string;
+      updates: Partial<CreateBookingParams>;
+    }) => updateBooking(bookingId, updates),
     onSuccess: (_, variables) => {
       // Invalidate specific booking and list
       queryClient.invalidateQueries({

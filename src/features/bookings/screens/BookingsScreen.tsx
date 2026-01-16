@@ -18,11 +18,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Text, Card, Button, LoadingSpinner } from '@shared/components';
 import { colors, spacing } from '@theme/index';
-import {
-  useBookings,
-  useCreateBooking,
-  useCancelBooking,
-} from '../hooks/useBookings';
+import { useBookings, useCreateBooking, useCancelBooking } from '../hooks/useBookings';
 import { Booking } from '@shared/types/travel';
 import { formatCurrency, formatDate } from '@shared/utils/format';
 
@@ -84,7 +80,15 @@ const BookingsScreen: React.FC<BookingsScreenProps> = () => {
         },
       },
     );
-  }, [tripId, guests, checkInDate, checkOutDate, specialRequests, createBookingMutation, navigation]);
+  }, [
+    tripId,
+    guests,
+    checkInDate,
+    checkOutDate,
+    specialRequests,
+    createBookingMutation,
+    navigation,
+  ]);
 
   const handleCancelBooking = useCallback(
     (bookingId: string) => {
@@ -121,8 +125,7 @@ const BookingsScreen: React.FC<BookingsScreenProps> = () => {
               styles.statusBadge,
               item.status === 'confirmed' && styles.statusConfirmed,
               item.status === 'cancelled' && styles.statusCancelled,
-            ]}
-          >
+            ]}>
             <Text variant="caption" color="textInverse" style={styles.statusText}>
               {item.status.toUpperCase()}
             </Text>
@@ -222,11 +225,7 @@ const BookingsScreen: React.FC<BookingsScreenProps> = () => {
           </View>
 
           <Button
-            title={
-              createBookingMutation.isPending
-                ? 'Creating...'
-                : 'Confirm Booking'
-            }
+            title={createBookingMutation.isPending ? 'Creating...' : 'Confirm Booking'}
             onPress={handleCreateBooking}
             disabled={createBookingMutation.isPending}
             fullWidth
@@ -254,9 +253,7 @@ const BookingsScreen: React.FC<BookingsScreenProps> = () => {
           renderItem={renderBookingItem}
           keyExtractor={bookingKeyExtractor}
           contentContainerStyle={styles.bookingsList}
-          refreshControl={
-            <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
-          }
+          refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
           showsVerticalScrollIndicator={false}
           removeClippedSubviews
           initialNumToRender={10}

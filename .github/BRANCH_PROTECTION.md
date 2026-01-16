@@ -7,11 +7,13 @@ This guide explains how to set up branch protection rules so that pull requests 
 The following status checks must pass before a PR can be merged:
 
 ### For `dev` Branch:
+
 - ✅ **Unit Tests** (from `tests.yml`)
 - ✅ **PR Validation** (from `pr-validation.yml`)
 - ✅ **E2E Tests** (optional, from `tests.yml`)
 
 ### For `main` Branch:
+
 - ✅ **Unit Tests** (from `tests.yml`)
 - ✅ **PR Validation** (from `pr-validation.yml`)
 
@@ -30,11 +32,13 @@ The following status checks must pass before a PR can be merged:
 3. Enable the following options:
 
    ✅ **Require a pull request before merging**
+
    - ✅ Require approvals: `1` (or more as needed)
    - ✅ Dismiss stale pull request approvals when new commits are pushed
    - ✅ Require review from Code Owners (if you have CODEOWNERS file)
 
    ✅ **Require status checks to pass before merging**
+
    - ✅ Require branches to be up to date before merging
    - In **Status checks that are required**, add:
      - `Unit Tests`
@@ -54,11 +58,13 @@ The following status checks must pass before a PR can be merged:
 3. Enable the following options:
 
    ✅ **Require a pull request before merging**
+
    - ✅ Require approvals: `2` (recommended for production)
    - ✅ Dismiss stale pull request approvals when new commits are pushed
    - ✅ Require review from Code Owners
 
    ✅ **Require status checks to pass before merging**
+
    - ✅ Require branches to be up to date before merging
    - In **Status checks that are required**, add:
      - `Unit Tests`
@@ -79,7 +85,7 @@ The following status checks must pass before a PR can be merged:
 The status checks that appear in GitHub are named after the job names in workflows:
 
 - **Unit Tests** - From `tests.yml` → `unit-tests` job
-- **E2E Tests** - From `tests.yml` → `e2e-tests` job  
+- **E2E Tests** - From `tests.yml` → `e2e-tests` job
 - **PR Validation** - From `pr-validation.yml` → `validate-pr` job
 
 ## How It Works
@@ -95,6 +101,7 @@ The status checks that appear in GitHub are named after the job names in workflo
 ## Testing the Setup
 
 1. Create a test branch:
+
    ```bash
    git checkout -b test-pr-validation
    ```
@@ -102,6 +109,7 @@ The status checks that appear in GitHub are named after the job names in workflo
 2. Make a small change (e.g., add a comment)
 
 3. Push and create PR:
+
    ```bash
    git add .
    git commit -m "Test PR validation"

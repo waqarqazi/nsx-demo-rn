@@ -30,8 +30,7 @@ const TabNavigator: React.FC = () => {
           borderTopWidth: 1,
           borderTopColor: colors.border,
         },
-      }}
-    >
+      }}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}

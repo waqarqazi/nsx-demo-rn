@@ -44,15 +44,17 @@ const SearchScreen: React.FC<SearchScreenProps> = () => {
     [searchQuery, initialDestinationId],
   );
 
-  const {
-    data: tripsData,
-    isLoading: isLoadingTrips,
-  } = useSearchTrips(searchParams, searchQuery.length > 0 || !!initialDestinationId);
+  const { data: tripsData, isLoading: isLoadingTrips } = useSearchTrips(
+    searchParams,
+    searchQuery.length > 0 || !!initialDestinationId,
+  );
 
-  const {
-    data: destinationsData,
-    isLoading: isLoadingDestinations,
-  } = useSearchDestinations(searchQuery, 1, 20, selectedTab === 'destinations');
+  const { data: destinationsData, isLoading: isLoadingDestinations } = useSearchDestinations(
+    searchQuery,
+    1,
+    20,
+    selectedTab === 'destinations',
+  );
 
   const handleTripPress = useCallback(
     (tripId: string) => {
@@ -75,8 +77,7 @@ const SearchScreen: React.FC<SearchScreenProps> = () => {
       <Card
         style={styles.resultCard}
         onPress={() => handleTripPress(item.id)}
-        testID={`search-trip-${item.id}`}
-      >
+        testID={`search-trip-${item.id}`}>
         <Text variant="h3" style={styles.resultTitle}>
           {item.destination.name}
         </Text>
@@ -101,8 +102,7 @@ const SearchScreen: React.FC<SearchScreenProps> = () => {
       <Card
         style={styles.resultCard}
         onPress={() => handleDestinationPress(item.id)}
-        testID={`search-destination-${item.id}`}
-      >
+        testID={`search-destination-${item.id}`}>
         <Text variant="h3" style={styles.resultTitle}>
           {item.name}
         </Text>
@@ -142,26 +142,22 @@ const SearchScreen: React.FC<SearchScreenProps> = () => {
         <TouchableOpacity
           style={[styles.tab, selectedTab === 'trips' && styles.tabActive]}
           onPress={() => setSelectedTab('trips')}
-          testID="tab-trips"
-        >
+          testID="tab-trips">
           <Text
             variant="body"
             weight={selectedTab === 'trips' ? 'semibold' : 'regular'}
-            color={selectedTab === 'trips' ? 'primary' : 'text'}
-          >
+            color={selectedTab === 'trips' ? 'primary' : 'text'}>
             Trips
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.tab, selectedTab === 'destinations' && styles.tabActive]}
           onPress={() => setSelectedTab('destinations')}
-          testID="tab-destinations"
-        >
+          testID="tab-destinations">
           <Text
             variant="body"
             weight={selectedTab === 'destinations' ? 'semibold' : 'regular'}
-            color={selectedTab === 'destinations' ? 'primary' : 'text'}
-          >
+            color={selectedTab === 'destinations' ? 'primary' : 'text'}>
             Destinations
           </Text>
         </TouchableOpacity>

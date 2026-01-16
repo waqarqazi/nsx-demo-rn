@@ -58,7 +58,7 @@ jest.mock('@react-native-firebase/crashlytics', () => () => ({
 
 // Mock Geolocation
 jest.mock('react-native-geolocation-service', () => ({
-  getCurrentPosition: jest.fn((success) =>
+  getCurrentPosition: jest.fn(success =>
     success({
       coords: {
         latitude: 37.7749,

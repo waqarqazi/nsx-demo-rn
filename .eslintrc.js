@@ -40,7 +40,15 @@ module.exports = {
       version: 'detect',
     },
   },
-  ignorePatterns: ['node_modules/', 'android/', 'ios/', '*.config.js', 'e2e/', 'jest.setup.js', 'scripts/'],
+  ignorePatterns: [
+    'node_modules/',
+    'android/',
+    'ios/',
+    '*.config.js',
+    'e2e/',
+    'jest.setup.js',
+    'scripts/',
+  ],
   overrides: [
     {
       files: ['e2e/**/*.js', 'jest.setup.js'],

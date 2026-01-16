@@ -113,7 +113,11 @@ export const setUserContext = (userId: string, email?: string) => {
 /**
  * Log breadcrumb for debugging
  */
-export const logBreadcrumb = (message: string, category?: string, data?: Record<string, unknown>) => {
+export const logBreadcrumb = (
+  message: string,
+  category?: string,
+  data?: Record<string, unknown>,
+) => {
   try {
     if (Sentry) {
       Sentry.addBreadcrumb({

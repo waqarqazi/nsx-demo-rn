@@ -5,13 +5,7 @@
  */
 
 import React, { useCallback } from 'react';
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  FlatList,
-  ListRenderItem,
-} from 'react-native';
+import { View, StyleSheet, ScrollView, FlatList, ListRenderItem } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
@@ -76,11 +70,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
           <Text variant="h3" color="error" align="center">
             Failed to load trip details
           </Text>
-          <Button
-            title="Go Back"
-            onPress={() => navigation.goBack()}
-            style={styles.backButton}
-          />
+          <Button title="Go Back" onPress={() => navigation.goBack()} style={styles.backButton} />
         </View>
       </SafeAreaView>
     );
@@ -91,8 +81,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}
-      >
+        showsVerticalScrollIndicator={false}>
         {trip.images && trip.images.length > 0 && (
           <FlatList
             data={trip.images}

@@ -67,8 +67,7 @@ const Button: React.FC<ButtonProps> = ({
       onPress={handlePress}
       disabled={disabled || loading}
       activeOpacity={0.7}
-      testID={testID}
-    >
+      testID={testID}>
       {loading ? (
         <ActivityIndicator
           color={variant === 'primary' ? colors.textInverse : colors.primary}
