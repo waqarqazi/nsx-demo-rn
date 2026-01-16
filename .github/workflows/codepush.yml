@@ -55,14 +55,23 @@ jobs:
       - name: Install CodePush CLI
         run: npm install -g code-push-cli
 
+      - name: Check CodePush Configuration
+        id: check_config
+        run: |
+          if [ -z "${{ secrets.CODEPUSH_ACCESS_TOKEN }}" ]; then
+            echo "configured=false" >> $GITHUB_OUTPUT
+            echo "⚠️ CodePush not configured - skipping deployment"
+            echo "📝 To enable CodePush, add CODEPUSH_ACCESS_TOKEN secret in GitHub Settings"
+            echo "📚 See .github/CODEPUSH_SETUP.md for setup instructions"
+          else
+            echo "configured=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Authenticate with CodePush
+        if: steps.check_config.outputs.configured == 'true'
         env:
           CODEPUSH_ACCESS_TOKEN: ${{ secrets.CODEPUSH_ACCESS_TOKEN }}
         run: |
-          if [ -z "$CODEPUSH_ACCESS_TOKEN" ]; then
-            echo "Error: CODEPUSH_ACCESS_TOKEN secret is not set"
-            exit 1
-          fi
           code-push login --accessKey $CODEPUSH_ACCESS_TOKEN
 
       - name: Determine deployment environment
@@ -161,14 +170,23 @@ jobs:
       - name: Install CodePush CLI
         run: npm install -g code-push-cli
 
+      - name: Check CodePush Configuration
+        id: check_config
+        run: |
+          if [ -z "${{ secrets.CODEPUSH_ACCESS_TOKEN }}" ]; then
+            echo "configured=false" >> $GITHUB_OUTPUT
+            echo "⚠️ CodePush not configured - skipping deployment"
+            echo "📝 To enable CodePush, add CODEPUSH_ACCESS_TOKEN secret in GitHub Settings"
+            echo "📚 See .github/CODEPUSH_SETUP.md for setup instructions"
+          else
+            echo "configured=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Authenticate with CodePush
+        if: steps.check_config.outputs.configured == 'true'
         env:
           CODEPUSH_ACCESS_TOKEN: ${{ secrets.CODEPUSH_ACCESS_TOKEN }}
         run: |
-          if [ -z "$CODEPUSH_ACCESS_TOKEN" ]; then
-            echo "Error: CODEPUSH_ACCESS_TOKEN secret is not set"
-            exit 1
-          fi
           code-push login --accessKey $CODEPUSH_ACCESS_TOKEN
 
       - name: Determine deployment environment
