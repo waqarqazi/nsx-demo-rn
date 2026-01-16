@@ -83,7 +83,12 @@ jobs:
       - name: Install CocoaPods dependencies
         run: |
           cd ios
-          pod install
+          if [ -f Gemfile ]; then
+            bundle install || echo "Bundle install failed, trying pod install directly"
+            bundle exec pod install || pod install
+          else
+            pod install
+          fi
 
       - name: Build for E2E testing
         run: |
