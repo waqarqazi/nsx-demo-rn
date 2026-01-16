@@ -47,7 +47,6 @@ const SearchScreen: React.FC<SearchScreenProps> = () => {
   const {
     data: tripsData,
     isLoading: isLoadingTrips,
-    error: tripsError,
   } = useSearchTrips(searchParams, searchQuery.length > 0 || !!initialDestinationId);
 
   const {
@@ -198,66 +197,66 @@ const SearchScreen: React.FC<SearchScreenProps> = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: colors.background,
+    flex: 1,
+  },
+  emptyState: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    padding: spacing.xl,
+  },
+  emptyText: {
+    marginTop: spacing.md,
   },
   header: {
-    padding: spacing.lg,
-    borderBottomWidth: 1,
     borderBottomColor: colors.border,
-  },
-  searchInput: {
-    height: 44,
-    backgroundColor: colors.backgroundGray,
-    borderRadius: 8,
-    paddingHorizontal: spacing.md,
-    fontSize: 16,
-    color: colors.text,
-  },
-  tabs: {
-    flexDirection: 'row',
-    paddingHorizontal: spacing.lg,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  tab: {
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.lg,
-    borderBottomWidth: 2,
-    borderBottomColor: 'transparent',
-  },
-  tabActive: {
-    borderBottomColor: colors.primary,
-  },
-  results: {
     padding: spacing.lg,
   },
   resultCard: {
     marginBottom: spacing.md,
   },
-  resultTitle: {
-    marginBottom: spacing.xs,
-  },
   resultDates: {
     marginBottom: spacing.sm,
   },
   resultPrice: {
-    marginTop: spacing.sm,
-    marginBottom: spacing.xs,
-    fontWeight: '600',
     color: colors.primary,
+    fontWeight: '600',
+    marginBottom: spacing.xs,
+    marginTop: spacing.sm,
   },
   resultRating: {
     marginTop: spacing.sm,
   },
-  emptyState: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: spacing.xl,
+  resultTitle: {
+    marginBottom: spacing.xs,
   },
-  emptyText: {
-    marginTop: spacing.md,
+  results: {
+    padding: spacing.lg,
+  },
+  searchInput: {
+    backgroundColor: colors.backgroundGray,
+    borderRadius: 8,
+    color: colors.text,
+    fontSize: 16,
+    height: 44,
+    paddingHorizontal: spacing.md,
+  },
+  tab: {
+    borderBottomColor: 'transparent',
+    borderBottomWidth: 2,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+  },
+  tabActive: {
+    borderBottomColor: colors.primary,
+  },
+  tabs: {
+    borderBottomColor: colors.border,
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    paddingHorizontal: spacing.lg,
   },
 });
 

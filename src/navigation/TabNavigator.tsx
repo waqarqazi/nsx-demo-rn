@@ -32,7 +32,7 @@ const TabNavigator: React.FC = () => {
         component={HomeScreen}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: ({ color }) => <Text>🏠</Text>,
+          tabBarIcon: () => <Text>🏠</Text>,
         }}
       />
       <Tab.Screen
@@ -40,7 +40,7 @@ const TabNavigator: React.FC = () => {
         component={SearchScreen}
         options={{
           tabBarLabel: 'Search',
-          tabBarIcon: ({ color }) => <Text>🔍</Text>,
+          tabBarIcon: () => <Text>🔍</Text>,
         }}
       />
       <Tab.Screen
@@ -48,7 +48,7 @@ const TabNavigator: React.FC = () => {
         component={BookingsScreen}
         options={{
           tabBarLabel: 'Bookings',
-          tabBarIcon: ({ color }) => <Text>📋</Text>,
+          tabBarIcon: () => <Text>📋</Text>,
         }}
       />
     </Tab.Navigator>

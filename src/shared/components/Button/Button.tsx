@@ -55,7 +55,7 @@ const Button: React.FC<ButtonProps> = ({
   ];
 
   const buttonTextStyle = [
-    styles.text,
+    styles.textBase,
     styles[`text_${variant}`],
     styles[`textSize_${size}`],
     textStyle,
@@ -83,39 +83,10 @@ const Button: React.FC<ButtonProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 8,
     alignItems: 'center',
-    justifyContent: 'center',
+    borderRadius: 8,
     flexDirection: 'row',
-  },
-  primary: {
-    backgroundColor: colors.primary,
-  },
-  secondary: {
-    backgroundColor: colors.secondary,
-  },
-  outline: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: colors.primary,
-  },
-  text: {
-    backgroundColor: 'transparent',
-  },
-  size_small: {
-    paddingVertical: spacing.xs,
-    paddingHorizontal: spacing.md,
-    minHeight: 32,
-  },
-  size_medium: {
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.lg,
-    minHeight: 44,
-  },
-  size_large: {
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.xl,
-    minHeight: 52,
+    justifyContent: 'center',
   },
   disabled: {
     opacity: 0.5,
@@ -123,8 +94,49 @@ const styles = StyleSheet.create({
   fullWidth: {
     width: '100%',
   },
+  outline: {
+    backgroundColor: colors.background,
+    borderColor: colors.primary,
+    borderWidth: 1,
+  },
+  primary: {
+    backgroundColor: colors.primary,
+  },
+  secondary: {
+    backgroundColor: colors.secondary,
+  },
+  size_large: {
+    minHeight: 52,
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.md,
+  },
+  size_medium: {
+    minHeight: 44,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+  },
+  size_small: {
+    minHeight: 32,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+  },
   text: {
+    backgroundColor: colors.background,
+  },
+  textBase: {
     fontWeight: typography.fontWeight.semibold,
+  },
+  textSize_large: {
+    fontSize: typography.fontSize.lg,
+  },
+  textSize_medium: {
+    fontSize: typography.fontSize.md,
+  },
+  textSize_small: {
+    fontSize: typography.fontSize.sm,
+  },
+  text_outline: {
+    color: colors.primary,
   },
   text_primary: {
     color: colors.textInverse,
@@ -132,20 +144,8 @@ const styles = StyleSheet.create({
   text_secondary: {
     color: colors.textInverse,
   },
-  text_outline: {
-    color: colors.primary,
-  },
   text_text: {
     color: colors.primary,
-  },
-  textSize_small: {
-    fontSize: typography.fontSize.sm,
-  },
-  textSize_medium: {
-    fontSize: typography.fontSize.md,
-  },
-  textSize_large: {
-    fontSize: typography.fontSize.lg,
   },
 });
 

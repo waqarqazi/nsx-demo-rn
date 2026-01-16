@@ -4,12 +4,11 @@
  * Optimized with React.memo, useCallback, and useMemo
  */
 
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import {
   View,
   StyleSheet,
   ScrollView,
-  Image,
   FlatList,
   ListRenderItem,
 } from 'react-native';
@@ -170,7 +169,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
           {trip.included && trip.included.length > 0 && (
             <Card style={styles.includedCard}>
               <Text variant="body" weight="semibold" style={styles.sectionTitle}>
-                What's included
+                What&apos;s included
               </Text>
               {trip.included.map((item, index) => (
                 <Text key={index} variant="body" color="textLight" style={styles.listItem}>
@@ -183,7 +182,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
           {trip.excluded && trip.excluded.length > 0 && (
             <Card style={styles.excludedCard}>
               <Text variant="body" weight="semibold" style={styles.sectionTitle}>
-                What's not included
+                What&apos;s not included
               </Text>
               {trip.excluded.map((item, index) => (
                 <Text key={index} variant="body" color="textLight" style={styles.listItem}>
@@ -208,47 +207,15 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
+  backButton: {
+    marginTop: spacing.lg,
   },
-  scrollView: {
+  container: {
+    backgroundColor: colors.background,
     flex: 1,
   },
   content: {
     paddingBottom: 100,
-  },
-  imageList: {
-    height: 300,
-  },
-  image: {
-    width: 400,
-    height: 300,
-  },
-  details: {
-    padding: spacing.lg,
-  },
-  title: {
-    marginBottom: spacing.md,
-  },
-  meta: {
-    marginBottom: spacing.lg,
-    gap: spacing.sm,
-  },
-  priceCard: {
-    marginBottom: spacing.md,
-  },
-  priceRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  price: {
-    color: colors.primary,
-    marginTop: spacing.xs,
-  },
-  duration: {
-    alignItems: 'flex-end',
   },
   datesCard: {
     marginBottom: spacing.md,
@@ -256,36 +223,68 @@ const styles = StyleSheet.create({
   descriptionCard: {
     marginBottom: spacing.md,
   },
-  includedCard: {
-    marginBottom: spacing.md,
+  details: {
+    padding: spacing.lg,
+  },
+  duration: {
+    alignItems: 'flex-end',
+  },
+  errorContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    padding: spacing.xl,
   },
   excludedCard: {
     marginBottom: spacing.md,
   },
-  sectionTitle: {
-    marginBottom: spacing.sm,
+  footer: {
+    backgroundColor: colors.background,
+    borderTopColor: colors.border,
+    borderTopWidth: 1,
+    bottom: 0,
+    left: 0,
+    padding: spacing.lg,
+    position: 'absolute',
+    right: 0,
+  },
+  image: {
+    height: 300,
+    width: 400,
+  },
+  imageList: {
+    height: 300,
+  },
+  includedCard: {
+    marginBottom: spacing.md,
   },
   listItem: {
     marginBottom: spacing.xs,
   },
-  footer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: spacing.lg,
-    backgroundColor: colors.background,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
+  meta: {
+    gap: spacing.sm,
+    marginBottom: spacing.lg,
   },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
+  price: {
+    color: colors.primary,
+    marginTop: spacing.xs,
+  },
+  priceCard: {
+    marginBottom: spacing.md,
+  },
+  priceRow: {
     alignItems: 'center',
-    padding: spacing.xl,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-  backButton: {
-    marginTop: spacing.lg,
+  scrollView: {
+    flex: 1,
+  },
+  sectionTitle: {
+    marginBottom: spacing.sm,
+  },
+  title: {
+    marginBottom: spacing.md,
   },
 });
 

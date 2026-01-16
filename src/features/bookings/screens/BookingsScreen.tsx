@@ -4,7 +4,7 @@
  * Optimized with React.memo, useCallback, and useMemo
  */
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   StyleSheet,
@@ -283,70 +283,46 @@ const BookingsScreen: React.FC<BookingsScreenProps> = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  header: {
-    padding: spacing.lg,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  title: {
-    marginBottom: spacing.sm,
-  },
-  bookingsList: {
-    padding: spacing.lg,
-  },
   bookingCard: {
     marginBottom: spacing.md,
   },
+  bookingDates: {
+    marginBottom: spacing.xs,
+  },
   bookingHeader: {
+    alignItems: 'flex-start',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
     marginBottom: spacing.sm,
+  },
+  bookingPrice: {
+    color: colors.primary,
+    fontWeight: '600',
+    marginTop: spacing.sm,
   },
   bookingTitle: {
     flex: 1,
     marginRight: spacing.md,
   },
-  statusBadge: {
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    borderRadius: 4,
-    backgroundColor: colors.textSecondary,
-  },
-  statusConfirmed: {
-    backgroundColor: colors.success,
-  },
-  statusCancelled: {
-    backgroundColor: colors.error,
-  },
-  statusText: {
-    fontSize: 10,
-    fontWeight: '600',
-  },
-  bookingDates: {
-    marginBottom: spacing.xs,
-  },
-  bookingPrice: {
-    marginTop: spacing.sm,
-    fontWeight: '600',
-    color: colors.primary,
+  bookingsList: {
+    padding: spacing.lg,
   },
   cancelButton: {
     marginTop: spacing.md,
   },
+  container: {
+    backgroundColor: colors.background,
+    flex: 1,
+  },
   emptyState: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     padding: spacing.xl,
   },
   emptyText: {
-    marginTop: spacing.md,
     marginBottom: spacing.lg,
+    marginTop: spacing.md,
   },
   exploreButton: {
     marginTop: spacing.md,
@@ -355,32 +331,56 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: spacing.lg,
   },
+  formGroup: {
+    marginBottom: spacing.lg,
+  },
   formTitle: {
     marginBottom: spacing.xl,
   },
-  formGroup: {
-    marginBottom: spacing.lg,
+  header: {
+    borderBottomColor: colors.border,
+    borderBottomWidth: 1,
+    padding: spacing.lg,
+  },
+  input: {
+    backgroundColor: colors.backgroundGray,
+    borderColor: colors.border,
+    borderRadius: 8,
+    borderWidth: 1,
+    color: colors.text,
+    fontSize: 16,
+    height: 44,
+    paddingHorizontal: spacing.md,
   },
   label: {
     marginBottom: spacing.sm,
   },
-  input: {
-    height: 44,
-    backgroundColor: colors.backgroundGray,
-    borderRadius: 8,
-    paddingHorizontal: spacing.md,
-    fontSize: 16,
-    color: colors.text,
-    borderWidth: 1,
-    borderColor: colors.border,
+  statusBadge: {
+    backgroundColor: colors.textSecondary,
+    borderRadius: 4,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  statusCancelled: {
+    backgroundColor: colors.error,
+  },
+  statusConfirmed: {
+    backgroundColor: colors.success,
+  },
+  statusText: {
+    fontSize: 10,
+    fontWeight: '600',
+  },
+  submitButton: {
+    marginTop: spacing.xl,
   },
   textArea: {
     height: 100,
     paddingTop: spacing.sm,
     textAlignVertical: 'top',
   },
-  submitButton: {
-    marginTop: spacing.xl,
+  title: {
+    marginBottom: spacing.sm,
   },
 });
 

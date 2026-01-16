@@ -17,6 +17,7 @@ export type TabParamList = {
   Bookings: { tripId?: string };
 };
 
+ 
 declare global {
   namespace ReactNavigation {
     interface RootParamList extends RootStackParamList {}

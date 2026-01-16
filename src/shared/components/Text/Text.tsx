@@ -44,6 +44,16 @@ const styles = StyleSheet.create({
   base: {
     color: colors.text,
   },
+  body: {
+    fontSize: typography.fontSize.md,
+    fontWeight: typography.fontWeight.regular,
+    lineHeight: typography.fontSize.md * typography.lineHeight.normal,
+  },
+  caption: {
+    fontSize: typography.fontSize.sm,
+    fontWeight: typography.fontWeight.regular,
+    lineHeight: typography.fontSize.sm * typography.lineHeight.normal,
+  },
   h1: {
     fontSize: typography.fontSize.display,
     fontWeight: typography.fontWeight.bold,
@@ -58,16 +68,6 @@ const styles = StyleSheet.create({
     fontSize: typography.fontSize.xxl,
     fontWeight: typography.fontWeight.semibold,
     lineHeight: typography.fontSize.xxl * typography.lineHeight.normal,
-  },
-  body: {
-    fontSize: typography.fontSize.md,
-    fontWeight: typography.fontWeight.regular,
-    lineHeight: typography.fontSize.md * typography.lineHeight.normal,
-  },
-  caption: {
-    fontSize: typography.fontSize.sm,
-    fontWeight: typography.fontWeight.regular,
-    lineHeight: typography.fontSize.sm * typography.lineHeight.normal,
   },
   label: {
     fontSize: typography.fontSize.sm,

@@ -4,7 +4,7 @@
  * Optimized with React.memo, useCallback, and useMemo
  */
 
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import {
   View,
   StyleSheet,
@@ -13,7 +13,6 @@ import {
   ListRenderItem,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
 import { Text, Card, LoadingSpinner, Button } from '@shared/components';
 import { colors, spacing } from '@theme/index';
 import { useFeaturedTrips, usePopularDestinations } from '../hooks/useHomeData';
@@ -28,7 +27,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const {
     data: featuredTrips,
     isLoading: isLoadingTrips,
-    error: tripsError,
     refetch: refetchTrips,
     isRefetching: isRefetchingTrips,
   } = useFeaturedTrips();
@@ -36,7 +34,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const {
     data: popularDestinations,
     isLoading: isLoadingDestinations,
-    error: destinationsError,
     refetch: refetchDestinations,
     isRefetching: isRefetchingDestinations,
   } = usePopularDestinations();
@@ -221,21 +218,28 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: colors.background,
+    flex: 1,
   },
   content: {
     paddingBottom: spacing.xxl,
+  },
+  destinationCard: {
+    marginRight: spacing.md,
+    width: 200,
+  },
+  destinationRating: {
+    marginTop: spacing.sm,
+  },
+  destinationTitle: {
+    marginBottom: spacing.xs,
   },
   header: {
     padding: spacing.lg,
     paddingBottom: spacing.xl,
   },
-  title: {
-    marginBottom: spacing.sm,
-  },
-  subtitle: {
-    marginBottom: spacing.lg,
+  horizontalList: {
+    paddingHorizontal: spacing.lg,
   },
   searchButton: {
     marginTop: spacing.md,
@@ -244,37 +248,30 @@ const styles = StyleSheet.create({
     marginTop: spacing.xl,
   },
   sectionTitle: {
-    paddingHorizontal: spacing.lg,
     marginBottom: spacing.md,
-  },
-  horizontalList: {
     paddingHorizontal: spacing.lg,
+  },
+  subtitle: {
+    marginBottom: spacing.lg,
+  },
+  title: {
+    marginBottom: spacing.sm,
   },
   tripCard: {
-    width: 280,
     marginRight: spacing.md,
-  },
-  tripTitle: {
-    marginBottom: spacing.xs,
+    width: 280,
   },
   tripDates: {
     marginBottom: spacing.sm,
   },
   tripPrice: {
-    marginTop: spacing.sm,
-    marginBottom: spacing.xs,
-    fontWeight: '600',
     color: colors.primary,
-  },
-  destinationCard: {
-    width: 200,
-    marginRight: spacing.md,
-  },
-  destinationTitle: {
+    fontWeight: '600',
     marginBottom: spacing.xs,
-  },
-  destinationRating: {
     marginTop: spacing.sm,
+  },
+  tripTitle: {
+    marginBottom: spacing.xs,
   },
 });
 

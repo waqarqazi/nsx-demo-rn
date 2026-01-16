@@ -21,7 +21,7 @@ let APP_NAME = 'Travel App';
 let APP_VERSION = '0.0.1';
 
 try {
-  const envVars = require('@env');
+  const envVars = require('@env'); // eslint-disable-line @typescript-eslint/no-var-requires
   API_BASE_URL = envVars.API_BASE_URL || API_BASE_URL;
   API_TIMEOUT = envVars.API_TIMEOUT || API_TIMEOUT;
   NODE_ENV = envVars.NODE_ENV || NODE_ENV;
