@@ -4,7 +4,7 @@
  * Optimized with React.memo, useCallback, and useMemo
  */
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   StyleSheet,
@@ -15,26 +15,22 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Text, Card, Button, LoadingSpinner } from '@shared/components';
 import { colors, spacing } from '@theme/index';
-import {
-  useBookings,
-  useCreateBooking,
-  useCancelBooking,
-} from '../hooks/useBookings';
+import { useBookings, useCreateBooking, useCancelBooking } from '../hooks/useBookings';
 import { Booking } from '@shared/types/travel';
 import { formatCurrency, formatDate } from '@shared/utils/format';
+import { TabParamList, RootStackParamList } from '../../../navigation/types';
 
-interface BookingsScreenProps {
-  navigation: any;
-  route: any;
-}
+type BookingsScreenRouteProp = RouteProp<TabParamList, 'Bookings'>;
+type BookingsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-const BookingsScreen: React.FC<BookingsScreenProps> = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
-  const tripId = route.params?.tripId as string | undefined;
+const BookingsScreen: React.FC = () => {
+  const navigation = useNavigation<BookingsScreenNavigationProp>();
+  const route = useRoute<BookingsScreenRouteProp>();
+  const tripId = route.params?.tripId;
 
   const [guests, setGuests] = useState('1');
   const [checkInDate, setCheckInDate] = useState('');
@@ -84,7 +80,15 @@ const BookingsScreen: React.FC<BookingsScreenProps> = () => {
         },
       },
     );
-  }, [tripId, guests, checkInDate, checkOutDate, specialRequests, createBookingMutation, navigation]);
+  }, [
+    tripId,
+    guests,
+    checkInDate,
+    checkOutDate,
+    specialRequests,
+    createBookingMutation,
+    navigation,
+  ]);
 
   const handleCancelBooking = useCallback(
     (bookingId: string) => {
@@ -121,8 +125,7 @@ const BookingsScreen: React.FC<BookingsScreenProps> = () => {
               styles.statusBadge,
               item.status === 'confirmed' && styles.statusConfirmed,
               item.status === 'cancelled' && styles.statusCancelled,
-            ]}
-          >
+            ]}>
             <Text variant="caption" color="textInverse" style={styles.statusText}>
               {item.status.toUpperCase()}
             </Text>
@@ -222,11 +225,7 @@ const BookingsScreen: React.FC<BookingsScreenProps> = () => {
           </View>
 
           <Button
-            title={
-              createBookingMutation.isPending
-                ? 'Creating...'
-                : 'Confirm Booking'
-            }
+            title={createBookingMutation.isPending ? 'Creating...' : 'Confirm Booking'}
             onPress={handleCreateBooking}
             disabled={createBookingMutation.isPending}
             fullWidth
@@ -254,9 +253,7 @@ const BookingsScreen: React.FC<BookingsScreenProps> = () => {
           renderItem={renderBookingItem}
           keyExtractor={bookingKeyExtractor}
           contentContainerStyle={styles.bookingsList}
-          refreshControl={
-            <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
-          }
+          refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
           showsVerticalScrollIndicator={false}
           removeClippedSubviews
           initialNumToRender={10}
@@ -273,7 +270,7 @@ const BookingsScreen: React.FC<BookingsScreenProps> = () => {
           </Text>
           <Button
             title="Explore Trips"
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation.navigate('MainTabs', { screen: 'Home' })}
             style={styles.exploreButton}
           />
         </View>
@@ -283,70 +280,46 @@ const BookingsScreen: React.FC<BookingsScreenProps> = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  header: {
-    padding: spacing.lg,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  title: {
-    marginBottom: spacing.sm,
-  },
-  bookingsList: {
-    padding: spacing.lg,
-  },
   bookingCard: {
     marginBottom: spacing.md,
   },
+  bookingDates: {
+    marginBottom: spacing.xs,
+  },
   bookingHeader: {
+    alignItems: 'flex-start',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
     marginBottom: spacing.sm,
+  },
+  bookingPrice: {
+    color: colors.primary,
+    fontWeight: '600',
+    marginTop: spacing.sm,
   },
   bookingTitle: {
     flex: 1,
     marginRight: spacing.md,
   },
-  statusBadge: {
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    borderRadius: 4,
-    backgroundColor: colors.textSecondary,
-  },
-  statusConfirmed: {
-    backgroundColor: colors.success,
-  },
-  statusCancelled: {
-    backgroundColor: colors.error,
-  },
-  statusText: {
-    fontSize: 10,
-    fontWeight: '600',
-  },
-  bookingDates: {
-    marginBottom: spacing.xs,
-  },
-  bookingPrice: {
-    marginTop: spacing.sm,
-    fontWeight: '600',
-    color: colors.primary,
+  bookingsList: {
+    padding: spacing.lg,
   },
   cancelButton: {
     marginTop: spacing.md,
   },
+  container: {
+    backgroundColor: colors.background,
+    flex: 1,
+  },
   emptyState: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     padding: spacing.xl,
   },
   emptyText: {
-    marginTop: spacing.md,
     marginBottom: spacing.lg,
+    marginTop: spacing.md,
   },
   exploreButton: {
     marginTop: spacing.md,
@@ -355,32 +328,56 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: spacing.lg,
   },
+  formGroup: {
+    marginBottom: spacing.lg,
+  },
   formTitle: {
     marginBottom: spacing.xl,
   },
-  formGroup: {
-    marginBottom: spacing.lg,
+  header: {
+    borderBottomColor: colors.border,
+    borderBottomWidth: 1,
+    padding: spacing.lg,
+  },
+  input: {
+    backgroundColor: colors.backgroundGray,
+    borderColor: colors.border,
+    borderRadius: 8,
+    borderWidth: 1,
+    color: colors.text,
+    fontSize: 16,
+    height: 44,
+    paddingHorizontal: spacing.md,
   },
   label: {
     marginBottom: spacing.sm,
   },
-  input: {
-    height: 44,
-    backgroundColor: colors.backgroundGray,
-    borderRadius: 8,
-    paddingHorizontal: spacing.md,
-    fontSize: 16,
-    color: colors.text,
-    borderWidth: 1,
-    borderColor: colors.border,
+  statusBadge: {
+    backgroundColor: colors.textSecondary,
+    borderRadius: 4,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  statusCancelled: {
+    backgroundColor: colors.error,
+  },
+  statusConfirmed: {
+    backgroundColor: colors.success,
+  },
+  statusText: {
+    fontSize: 10,
+    fontWeight: '600',
+  },
+  submitButton: {
+    marginTop: spacing.xl,
   },
   textArea: {
     height: 100,
     paddingTop: spacing.sm,
     textAlignVertical: 'top',
   },
-  submitButton: {
-    marginTop: spacing.xl,
+  title: {
+    marginBottom: spacing.sm,
   },
 });
 

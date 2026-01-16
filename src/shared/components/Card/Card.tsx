@@ -22,8 +22,7 @@ const Card: React.FC<CardProps> = ({ children, style, onPress, testID }) => {
       style={[styles.card, style]}
       onPress={onPress}
       activeOpacity={onPress ? 0.7 : 1}
-      testID={testID}
-    >
+      testID={testID}>
       {children}
     </Container>
   );
@@ -33,6 +32,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.cardBackground,
     borderRadius: 12,
+    elevation: 3,
     padding: spacing.md,
     shadowColor: colors.cardShadow,
     shadowOffset: {
@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 3,
   },
 });
 

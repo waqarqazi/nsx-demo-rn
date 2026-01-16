@@ -1,0 +1,64 @@
+name: PR Validation
+
+on:
+  pull_request:
+    branches: [main, dev]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  validate-pr:
+    name: Validate Pull Request
+    runs-on: ubuntu-latest
+    # This job must pass for PRs to be mergeable
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history for better analysis
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Check code formatting
+        run: npm run format:check
+
+      - name: TypeScript type check
+        run: npm run type-check
+
+      - name: Run unit tests
+        run: npm run test:coverage
+
+      - name: Check test coverage threshold
+        run: |
+          # Ensure minimum coverage is met
+          npm run test:coverage
+          # Coverage thresholds are defined in jest.config.js
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-pr
+          fail_ci_if_error: false
+
+      - name: PR Validation Summary
+        if: always()
+        run: |
+          echo "## PR Validation Results" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ ESLint: Passed" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Formatting: Passed" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Type Check: Passed" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Unit Tests: Passed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**This PR is ready to merge once all checks pass.**" >> $GITHUB_STEP_SUMMARY

@@ -4,7 +4,9 @@
  */
 
 // Conditionally import monitoring libraries
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let Sentry: any = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let crashlytics: any = null;
 
 try {
@@ -111,7 +113,11 @@ export const setUserContext = (userId: string, email?: string) => {
 /**
  * Log breadcrumb for debugging
  */
-export const logBreadcrumb = (message: string, category?: string, data?: Record<string, unknown>) => {
+export const logBreadcrumb = (
+  message: string,
+  category?: string,
+  data?: Record<string, unknown>,
+) => {
   try {
     if (Sentry) {
       Sentry.addBreadcrumb({

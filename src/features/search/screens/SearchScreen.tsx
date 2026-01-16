@@ -14,22 +14,22 @@ import {
   ListRenderItem,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Text, Card, LoadingSpinner } from '@shared/components';
 import { colors, spacing } from '@theme/index';
 import { useSearchTrips, useSearchDestinations } from '../hooks/useSearch';
 import { Trip, Destination } from '@shared/types/travel';
 import { formatCurrency, formatDate } from '@shared/utils/format';
+import { TabParamList, RootStackParamList } from '../../../navigation/types';
 
-interface SearchScreenProps {
-  navigation: any;
-  route: any;
-}
+type SearchScreenRouteProp = RouteProp<TabParamList, 'Search'>;
+type SearchScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-const SearchScreen: React.FC<SearchScreenProps> = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
-  const initialDestinationId = route.params?.destinationId as string | undefined;
+const SearchScreen: React.FC = () => {
+  const navigation = useNavigation<SearchScreenNavigationProp>();
+  const route = useRoute<SearchScreenRouteProp>();
+  const initialDestinationId = route.params?.destinationId;
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTab, setSelectedTab] = useState<'trips' | 'destinations'>('trips');
@@ -44,16 +44,17 @@ const SearchScreen: React.FC<SearchScreenProps> = () => {
     [searchQuery, initialDestinationId],
   );
 
-  const {
-    data: tripsData,
-    isLoading: isLoadingTrips,
-    error: tripsError,
-  } = useSearchTrips(searchParams, searchQuery.length > 0 || !!initialDestinationId);
+  const { data: tripsData, isLoading: isLoadingTrips } = useSearchTrips(
+    searchParams,
+    searchQuery.length > 0 || !!initialDestinationId,
+  );
 
-  const {
-    data: destinationsData,
-    isLoading: isLoadingDestinations,
-  } = useSearchDestinations(searchQuery, 1, 20, selectedTab === 'destinations');
+  const { data: destinationsData, isLoading: isLoadingDestinations } = useSearchDestinations(
+    searchQuery,
+    1,
+    20,
+    selectedTab === 'destinations',
+  );
 
   const handleTripPress = useCallback(
     (tripId: string) => {
@@ -65,7 +66,7 @@ const SearchScreen: React.FC<SearchScreenProps> = () => {
   const handleDestinationPress = useCallback(
     (destinationId: string) => {
       setSearchQuery('');
-      navigation.navigate('Search', { destinationId });
+      navigation.navigate('MainTabs', { screen: 'Search', params: { destinationId } });
       setSelectedTab('trips');
     },
     [navigation],
@@ -76,8 +77,7 @@ const SearchScreen: React.FC<SearchScreenProps> = () => {
       <Card
         style={styles.resultCard}
         onPress={() => handleTripPress(item.id)}
-        testID={`search-trip-${item.id}`}
-      >
+        testID={`search-trip-${item.id}`}>
         <Text variant="h3" style={styles.resultTitle}>
           {item.destination.name}
         </Text>
@@ -102,8 +102,7 @@ const SearchScreen: React.FC<SearchScreenProps> = () => {
       <Card
         style={styles.resultCard}
         onPress={() => handleDestinationPress(item.id)}
-        testID={`search-destination-${item.id}`}
-      >
+        testID={`search-destination-${item.id}`}>
         <Text variant="h3" style={styles.resultTitle}>
           {item.name}
         </Text>
@@ -143,26 +142,22 @@ const SearchScreen: React.FC<SearchScreenProps> = () => {
         <TouchableOpacity
           style={[styles.tab, selectedTab === 'trips' && styles.tabActive]}
           onPress={() => setSelectedTab('trips')}
-          testID="tab-trips"
-        >
+          testID="tab-trips">
           <Text
             variant="body"
             weight={selectedTab === 'trips' ? 'semibold' : 'regular'}
-            color={selectedTab === 'trips' ? 'primary' : 'text'}
-          >
+            color={selectedTab === 'trips' ? 'primary' : 'text'}>
             Trips
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.tab, selectedTab === 'destinations' && styles.tabActive]}
           onPress={() => setSelectedTab('destinations')}
-          testID="tab-destinations"
-        >
+          testID="tab-destinations">
           <Text
             variant="body"
             weight={selectedTab === 'destinations' ? 'semibold' : 'regular'}
-            color={selectedTab === 'destinations' ? 'primary' : 'text'}
-          >
+            color={selectedTab === 'destinations' ? 'primary' : 'text'}>
             Destinations
           </Text>
         </TouchableOpacity>
@@ -171,17 +166,31 @@ const SearchScreen: React.FC<SearchScreenProps> = () => {
       {isLoading ? (
         <LoadingSpinner fullScreen message="Searching..." />
       ) : hasResults ? (
-        <FlatList
-          data={results}
-          renderItem={selectedTab === 'trips' ? renderTripItem : renderDestinationItem}
-          keyExtractor={selectedTab === 'trips' ? tripKeyExtractor : destinationKeyExtractor}
-          contentContainerStyle={styles.results}
-          showsVerticalScrollIndicator={false}
-          removeClippedSubviews
-          initialNumToRender={10}
-          maxToRenderPerBatch={10}
-          windowSize={10}
-        />
+        selectedTab === 'trips' ? (
+          <FlatList<Trip>
+            data={tripsData?.items || []}
+            renderItem={renderTripItem}
+            keyExtractor={tripKeyExtractor}
+            contentContainerStyle={styles.results}
+            showsVerticalScrollIndicator={false}
+            removeClippedSubviews
+            initialNumToRender={10}
+            maxToRenderPerBatch={10}
+            windowSize={10}
+          />
+        ) : (
+          <FlatList<Destination>
+            data={destinationsData?.items || []}
+            renderItem={renderDestinationItem}
+            keyExtractor={destinationKeyExtractor}
+            contentContainerStyle={styles.results}
+            showsVerticalScrollIndicator={false}
+            removeClippedSubviews
+            initialNumToRender={10}
+            maxToRenderPerBatch={10}
+            windowSize={10}
+          />
+        )
       ) : (
         <View style={styles.emptyState}>
           <Text variant="h3" color="textLight" align="center">
@@ -198,66 +207,66 @@ const SearchScreen: React.FC<SearchScreenProps> = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: colors.background,
+    flex: 1,
+  },
+  emptyState: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    padding: spacing.xl,
+  },
+  emptyText: {
+    marginTop: spacing.md,
   },
   header: {
-    padding: spacing.lg,
-    borderBottomWidth: 1,
     borderBottomColor: colors.border,
-  },
-  searchInput: {
-    height: 44,
-    backgroundColor: colors.backgroundGray,
-    borderRadius: 8,
-    paddingHorizontal: spacing.md,
-    fontSize: 16,
-    color: colors.text,
-  },
-  tabs: {
-    flexDirection: 'row',
-    paddingHorizontal: spacing.lg,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  tab: {
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.lg,
-    borderBottomWidth: 2,
-    borderBottomColor: 'transparent',
-  },
-  tabActive: {
-    borderBottomColor: colors.primary,
-  },
-  results: {
     padding: spacing.lg,
   },
   resultCard: {
     marginBottom: spacing.md,
   },
-  resultTitle: {
-    marginBottom: spacing.xs,
-  },
   resultDates: {
     marginBottom: spacing.sm,
   },
   resultPrice: {
-    marginTop: spacing.sm,
-    marginBottom: spacing.xs,
-    fontWeight: '600',
     color: colors.primary,
+    fontWeight: '600',
+    marginBottom: spacing.xs,
+    marginTop: spacing.sm,
   },
   resultRating: {
     marginTop: spacing.sm,
   },
-  emptyState: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: spacing.xl,
+  resultTitle: {
+    marginBottom: spacing.xs,
   },
-  emptyText: {
-    marginTop: spacing.md,
+  results: {
+    padding: spacing.lg,
+  },
+  searchInput: {
+    backgroundColor: colors.backgroundGray,
+    borderRadius: 8,
+    color: colors.text,
+    fontSize: 16,
+    height: 44,
+    paddingHorizontal: spacing.md,
+  },
+  tab: {
+    borderBottomColor: colors.background,
+    borderBottomWidth: 2,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+  },
+  tabActive: {
+    borderBottomColor: colors.primary,
+  },
+  tabs: {
+    borderBottomColor: colors.border,
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    paddingHorizontal: spacing.lg,
   },
 });
 

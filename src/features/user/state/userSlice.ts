@@ -27,7 +27,7 @@ const userSlice = createSlice({
     setProfile: (state, action: PayloadAction<UserProfile>) => {
       state.profile = action.payload;
     },
-    clearProfile: (state) => {
+    clearProfile: state => {
       state.profile = null;
     },
     updateProfile: (state, action: PayloadAction<Partial<UserProfile>>) => {

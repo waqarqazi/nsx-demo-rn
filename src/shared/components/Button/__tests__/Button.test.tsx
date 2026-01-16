@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import { Button } from '../Button';
+import Button from '../Button';
 
 describe('Button Component', () => {
   it('renders correctly', () => {
@@ -23,9 +23,7 @@ describe('Button Component', () => {
 
   it('does not call onPress when disabled', () => {
     const onPressMock = jest.fn();
-    const { getByText } = render(
-      <Button title="Test Button" onPress={onPressMock} disabled />,
-    );
+    const { getByText } = render(<Button title="Test Button" onPress={onPressMock} disabled />);
 
     fireEvent.press(getByText('Test Button'));
     expect(onPressMock).not.toHaveBeenCalled();

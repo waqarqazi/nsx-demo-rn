@@ -43,16 +43,19 @@ src/
 ### Implemented Features
 
 1. **Home Screen**
+
    - Featured trips display
    - Popular destinations
    - Optimized FlatList with lazy loading
 
 2. **Search**
+
    - Trip and destination search
    - Real-time filtering
    - Pagination support
 
 3. **Trip Details**
+
    - Comprehensive trip information
    - Image gallery
    - Booking integration
@@ -65,34 +68,42 @@ src/
 ## 🛠️ Tech Stack
 
 ### Core
+
 - **React Native** 0.83.1
 - **TypeScript** 5.8.3 (strict mode)
 - **React** 19.2.0
 
 ### State Management & Data Fetching
+
 - **Redux Toolkit** - Global state management
 - **React Query (TanStack Query)** - Server state & caching
 - **Axios** - HTTP client with interceptors
 
 ### Navigation
+
 - **React Navigation** - Stack & Tab navigation
 
 ### Native Capabilities
+
 - **react-native-permissions** - Permission handling
 - **react-native-geolocation-service** - Location services
 
 ### Monitoring & Analytics
+
 - **Sentry** - Error tracking & monitoring
 - **Firebase Crashlytics** - Crash reporting
 
 ### OTA Updates
+
 - **CodePush** - Over-the-air updates
 
 ### Performance
+
 - **react-native-fast-image** - Optimized image loading
 - **react-native-reanimated** - Smooth animations
 
 ### Testing
+
 - **Jest** - Unit testing
 - **React Native Testing Library** - Component testing
 - **Detox** - E2E testing
@@ -109,20 +120,23 @@ src/
 ### Setup
 
 1. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 2. **Configure environment variables**
+
    ```bash
    # Copy example env file
    cp .env.example .env
-   
+
    # Edit .env with your actual values
    # See ENV_SETUP.md for detailed instructions
    ```
 
 3. **iOS setup**
+
    ```bash
    cd ios
    bundle install
@@ -131,6 +145,7 @@ src/
    ```
 
 4. **Run the app**
+
    ```bash
    # iOS
    npm run ios
@@ -144,6 +159,7 @@ src/
 The app uses environment variables for configuration. See [ENV_SETUP.md](./ENV_SETUP.md) for detailed setup instructions.
 
 **Quick setup:**
+
 1. Copy `.env.example` to `.env`
 2. Fill in your configuration values
 3. Restart Metro bundler: `npm start -- --reset-cache`
@@ -151,21 +167,25 @@ The app uses environment variables for configuration. See [ENV_SETUP.md](./ENV_S
 ## 🧪 Testing
 
 ### Unit Tests
+
 ```bash
 npm test
 ```
 
 ### Watch Mode
+
 ```bash
 npm run test:watch
 ```
 
 ### Coverage
+
 ```bash
 npm run test:coverage
 ```
 
 ### E2E Tests (Detox)
+
 ```bash
 # Build
 npm run detox:build
@@ -218,6 +238,7 @@ npm run type-check
 ## 🔐 Permissions
 
 The app requests permissions contextually (not at launch):
+
 - Location permissions when needed for location-based features
 
 ## 📊 Monitoring
@@ -253,6 +274,7 @@ code-push release-react NsxDemo-android
 ## 🚢 CI/CD
 
 GitHub Actions workflow includes:
+
 - Linting and type checking
 - Unit tests with coverage
 - Android build
@@ -270,6 +292,7 @@ See `.github/workflows/ci.yml` for details.
 ## 🎨 Design System
 
 The app includes a comprehensive design system:
+
 - **Colors**: Centralized color palette
 - **Typography**: Consistent font sizes and weights
 - **Spacing**: 4px grid system

@@ -15,7 +15,7 @@ export const store = configureStore({
     auth: authReducer,
     user: userReducer,
   },
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
         // Ignore these action types
