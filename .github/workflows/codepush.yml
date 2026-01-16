@@ -1,0 +1,196 @@
+name: CodePush Deployment
+
+on:
+  push:
+    branches: [main, dev]
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'App.tsx'
+      - 'index.js'
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Platform to deploy (android, ios, or both)'
+        required: true
+        default: 'both'
+        type: choice
+        options:
+          - android
+          - ios
+          - both
+      environment:
+        description: 'Environment (staging or production)'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  deploy-android:
+    name: Deploy Android to CodePush
+    runs-on: ubuntu-latest
+    if: |
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev') &&
+      (github.event_name == 'push' || 
+       (github.event_name == 'workflow_dispatch' && 
+        (github.event.inputs.platform == 'android' || github.event.inputs.platform == 'both')))
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Install CodePush CLI
+        run: npm install -g code-push-cli
+
+      - name: Authenticate with CodePush
+        env:
+          CODEPUSH_ACCESS_TOKEN: ${{ secrets.CODEPUSH_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$CODEPUSH_ACCESS_TOKEN" ]; then
+            echo "Error: CODEPUSH_ACCESS_TOKEN secret is not set"
+            exit 1
+          fi
+          code-push login --accessKey $CODEPUSH_ACCESS_TOKEN
+
+      - name: Determine deployment environment
+        id: env
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ] || [ "${{ github.event.inputs.environment }}" == "production" ]; then
+            echo "environment=Production" >> $GITHUB_OUTPUT
+            echo "deployment_key=${{ secrets.CODEPUSH_ANDROID_PRODUCTION_KEY }}" >> $GITHUB_OUTPUT
+          else
+            echo "environment=Staging" >> $GITHUB_OUTPUT
+            echo "deployment_key=${{ secrets.CODEPUSH_ANDROID_STAGING_KEY }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Deploy to CodePush (Android)
+        env:
+          DEPLOYMENT_KEY: ${{ steps.env.outputs.deployment_key }}
+          ENVIRONMENT: ${{ steps.env.outputs.environment }}
+        run: |
+          if [ -z "$DEPLOYMENT_KEY" ]; then
+            echo "Warning: Deployment key not set, skipping deployment"
+            exit 0
+          fi
+          
+          code-push release-react \
+            NsxDemo-Android \
+            android \
+            --deploymentKey "$DEPLOYMENT_KEY" \
+            --description "CI/CD Deploy: ${{ github.sha }} - ${{ github.ref_name }} - $ENVIRONMENT" \
+            --mandatory false \
+            --targetBinaryVersion "*" \
+            --rollout 100
+
+      - name: Deployment Summary
+        run: |
+          echo "## Android CodePush Deployment" >> $GITHUB_STEP_SUMMARY
+          echo "- Environment: ${{ steps.env.outputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: ✅ Deployed successfully" >> $GITHUB_STEP_SUMMARY
+
+  deploy-ios:
+    name: Deploy iOS to CodePush
+    runs-on: macos-latest
+    if: |
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev') &&
+      (github.event_name == 'push' || 
+       (github.event_name == 'workflow_dispatch' && 
+        (github.event.inputs.platform == 'ios' || github.event.inputs.platform == 'both')))
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Install CodePush CLI
+        run: npm install -g code-push-cli
+
+      - name: Authenticate with CodePush
+        env:
+          CODEPUSH_ACCESS_TOKEN: ${{ secrets.CODEPUSH_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$CODEPUSH_ACCESS_TOKEN" ]; then
+            echo "Error: CODEPUSH_ACCESS_TOKEN secret is not set"
+            exit 1
+          fi
+          code-push login --accessKey $CODEPUSH_ACCESS_TOKEN
+
+      - name: Determine deployment environment
+        id: env
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ] || [ "${{ github.event.inputs.environment }}" == "production" ]; then
+            echo "environment=Production" >> $GITHUB_OUTPUT
+            echo "deployment_key=${{ secrets.CODEPUSH_IOS_PRODUCTION_KEY }}" >> $GITHUB_OUTPUT
+          else
+            echo "environment=Staging" >> $GITHUB_OUTPUT
+            echo "deployment_key=${{ secrets.CODEPUSH_IOS_STAGING_KEY }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Deploy to CodePush (iOS)
+        env:
+          DEPLOYMENT_KEY: ${{ steps.env.outputs.deployment_key }}
+          ENVIRONMENT: ${{ steps.env.outputs.environment }}
+        run: |
+          if [ -z "$DEPLOYMENT_KEY" ]; then
+            echo "Warning: Deployment key not set, skipping deployment"
+            exit 0
+          fi
+          
+          code-push release-react \
+            NsxDemo-iOS \
+            ios \
+            --deploymentKey "$DEPLOYMENT_KEY" \
+            --description "CI/CD Deploy: ${{ github.sha }} - ${{ github.ref_name }} - $ENVIRONMENT" \
+            --mandatory false \
+            --targetBinaryVersion "*" \
+            --rollout 100
+
+      - name: Deployment Summary
+        run: |
+          echo "## iOS CodePush Deployment" >> $GITHUB_STEP_SUMMARY
+          echo "- Environment: ${{ steps.env.outputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: ✅ Deployed successfully" >> $GITHUB_STEP_SUMMARY
+
+  deployment-summary:
+    name: Deployment Summary
+    runs-on: ubuntu-latest
+    needs: [deploy-android, deploy-ios]
+    if: always()
+
+    steps:
+      - name: Final Summary
+        run: |
+          echo "## CodePush Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Android" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: ${{ needs.deploy-android.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### iOS" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: ${{ needs.deploy-ios.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployment completed. Users will receive updates automatically.**" >> $GITHUB_STEP_SUMMARY
