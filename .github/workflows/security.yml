@@ -1,0 +1,97 @@
+name: Security Scan
+
+on:
+  pull_request:
+    branches: [main, dev]
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+jobs:
+  snyk-sast:
+    name: Snyk Security Scan
+    runs-on: ubuntu-latest
+    # Run after tests pass
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    # Optional: Uncomment to wait for tests to pass first
+    # needs: [unit-tests]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Run Snyk Security Scan
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+      - name: Upload Snyk results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        continue-on-error: true
+        with:
+          sarif_file: snyk.sarif
+        # Note: Snyk SARIF output requires additional configuration
+
+  semgrep-sast:
+    name: Semgrep Security Scan
+    runs-on: ubuntu-latest
+    # Run after tests pass
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    # Optional: Uncomment to wait for tests to pass first
+    # needs: [unit-tests]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history for better analysis
+
+      - name: Run Semgrep Security Scan
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: >-
+            p/security-audit
+            p/owasp-top-ten
+            p/typescript
+            p/javascript
+            p/react
+            p/react-native
+        continue-on-error: true
+
+      - name: Upload Semgrep results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        continue-on-error: true
+        with:
+          sarif_file: semgrep.sarif
+
+  security-summary:
+    name: Security Scan Summary
+    runs-on: ubuntu-latest
+    needs: [snyk-sast, semgrep-sast]
+    if: always() && github.event_name == 'pull_request'
+
+    steps:
+      - name: Security Scan Summary
+        run: |
+          echo "## Security Scan Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Snyk Security Scan" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: ${{ needs.snyk-sast.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Semgrep Security Scan" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: ${{ needs.semgrep-sast.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Security scans completed. Review results above.**" >> $GITHUB_STEP_SUMMARY
