@@ -1,97 +1,346 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Travel App - Production-Ready React Native Demo
 
-# Getting Started
+A production-ready Travel App built with React Native and TypeScript, following feature-based modular architecture. This project demonstrates senior-level React Native engineering practices and serves as a reference architecture for real production apps.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## 🏗️ Architecture
 
-## Step 1: Start Metro
+### Feature-Based Modular Structure
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+The app follows a feature-based architecture where each feature is self-contained:
 
-To start the Metro dev server, run the following command from the root of your React Native project:
-
-```sh
-# Using npm
-npm start
-
-# OR using Yarn
-yarn start
+```
+src/
+├── features/              # Feature modules
+│   ├── home/             # Home feature
+│   │   ├── screens/      # Feature screens
+│   │   ├── hooks/        # React Query hooks
+│   │   ├── services/     # API services
+│   │   └── state/         # Redux slices (if needed)
+│   ├── search/           # Search feature
+│   ├── tripDetails/      # Trip Details feature
+│   └── bookings/         # Bookings feature
+│
+├── shared/               # Shared modules
+│   ├── api/             # API client & endpoints
+│   ├── components/      # Reusable UI components
+│   ├── theme/           # Design system (colors, typography, spacing)
+│   ├── types/           # TypeScript types
+│   ├── utils/           # Utility functions
+│   └── store/           # Redux store & React Query setup
+│
+└── navigation/          # Navigation configuration
 ```
 
-## Step 2: Build and run your app
+### Key Principles
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+- **Separation of Concerns**: Business logic in hooks/services, not UI components
+- **Type Safety**: Strict TypeScript mode enabled
+- **Performance**: Optimized with React.memo, useCallback, useMemo
+- **Scalability**: Feature-based structure allows easy feature addition/removal
 
-### Android
+## 🚀 Features
 
-```sh
-# Using npm
-npm run android
+### Implemented Features
 
-# OR using Yarn
-yarn android
+1. **Home Screen**
+   - Featured trips display
+   - Popular destinations
+   - Optimized FlatList with lazy loading
+
+2. **Search**
+   - Trip and destination search
+   - Real-time filtering
+   - Pagination support
+
+3. **Trip Details**
+   - Comprehensive trip information
+   - Image gallery
+   - Booking integration
+
+4. **Bookings**
+   - View user bookings
+   - Create new bookings
+   - Cancel bookings
+
+## 🛠️ Tech Stack
+
+### Core
+- **React Native** 0.83.1
+- **TypeScript** 5.8.3 (strict mode)
+- **React** 19.2.0
+
+### State Management & Data Fetching
+- **Redux Toolkit** - Global state management
+- **React Query (TanStack Query)** - Server state & caching
+- **Axios** - HTTP client with interceptors
+
+### Navigation
+- **React Navigation** - Stack & Tab navigation
+
+### Native Capabilities
+- **react-native-permissions** - Permission handling
+- **react-native-geolocation-service** - Location services
+
+### Monitoring & Analytics
+- **Sentry** - Error tracking & monitoring
+- **Firebase Crashlytics** - Crash reporting
+
+### OTA Updates
+- **CodePush** - Over-the-air updates
+
+### Performance
+- **react-native-fast-image** - Optimized image loading
+- **react-native-reanimated** - Smooth animations
+
+### Testing
+- **Jest** - Unit testing
+- **React Native Testing Library** - Component testing
+- **Detox** - E2E testing
+
+## 📦 Installation
+
+### Prerequisites
+
+- Node.js >= 20
+- React Native development environment set up
+- iOS: Xcode and CocoaPods
+- Android: Android Studio and JDK 17
+
+### Setup
+
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Configure environment variables**
+   ```bash
+   # Copy example env file
+   cp .env.example .env
+   
+   # Edit .env with your actual values
+   # See ENV_SETUP.md for detailed instructions
+   ```
+
+3. **iOS setup**
+   ```bash
+   cd ios
+   bundle install
+   bundle exec pod install
+   cd ..
+   ```
+
+4. **Run the app**
+   ```bash
+   # iOS
+   npm run ios
+
+   # Android
+   npm run android
+   ```
+
+### Environment Variables
+
+The app uses environment variables for configuration. See [ENV_SETUP.md](./ENV_SETUP.md) for detailed setup instructions.
+
+**Quick setup:**
+1. Copy `.env.example` to `.env`
+2. Fill in your configuration values
+3. Restart Metro bundler: `npm start -- --reset-cache`
+
+## 🧪 Testing
+
+### Unit Tests
+```bash
+npm test
 ```
 
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+### Watch Mode
+```bash
+npm run test:watch
 ```
 
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
+### Coverage
+```bash
+npm run test:coverage
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+### E2E Tests (Detox)
+```bash
+# Build
+npm run detox:build
 
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+# Test
+npm run detox:test
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## 🔧 Development
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+### Code Quality
 
-## Step 3: Modify your app
+- **ESLint** - Linting
+- **Prettier** - Code formatting
+- **TypeScript** - Type checking
 
-Now that you have successfully run the app, let's make changes!
+```bash
+# Lint
+npm run lint
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+# Format
+npm run format
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+# Type check
+npm run type-check
+```
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+### Project Structure Guidelines
 
-## Congratulations! :tada:
+1. **Features**: Each feature is self-contained with its own screens, hooks, services, and state
+2. **Shared Modules**: Reusable components, utilities, and types
+3. **Business Logic**: Lives in hooks and services, not UI components
+4. **Type Safety**: All code is typed with TypeScript
 
-You've successfully run and modified your React Native App. :partying_face:
+## 📱 Performance Optimizations
 
-### Now what?
+### Implemented Optimizations
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+1. **React.memo** - Prevents unnecessary re-renders
+2. **useCallback** - Memoizes callback functions
+3. **useMemo** - Memoizes computed values
+4. **FlatList Optimization**:
+   - `keyExtractor` for efficient key generation
+   - `getItemLayout` for known item sizes
+   - `removeClippedSubviews` for off-screen rendering
+   - `initialNumToRender` and `maxToRenderPerBatch` tuning
+5. **Lazy Loading** - Dynamic imports for screens
+6. **Image Optimization** - FastImage for efficient image loading
 
-# Troubleshooting
+## 🔐 Permissions
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+The app requests permissions contextually (not at launch):
+- Location permissions when needed for location-based features
 
-# Learn More
+## 📊 Monitoring
 
-To learn more about React Native, take a look at the following resources:
+### Sentry Setup
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+1. Add your Sentry DSN in `src/shared/services/monitoring.ts`
+2. Errors are automatically tracked in production
+
+### Firebase Crashlytics
+
+1. Configure Firebase in your project
+2. Crashlytics automatically captures crashes
+
+## 🔄 OTA Updates (CodePush)
+
+### Setup
+
+1. Install CodePush CLI: `npm install -g code-push-cli`
+2. Create CodePush account: `code-push register`
+3. Add deployment keys to your app configuration
+
+### Deploy Updates
+
+```bash
+# iOS
+code-push release-react NsxDemo-ios
+
+# Android
+code-push release-react NsxDemo-android
+```
+
+## 🚢 CI/CD
+
+GitHub Actions workflow includes:
+- Linting and type checking
+- Unit tests with coverage
+- Android build
+- iOS build
+- Deployment (configure as needed)
+
+See `.github/workflows/ci.yml` for details.
+
+## 📝 Code Style
+
+- **ESLint**: Configured with React Native and TypeScript rules
+- **Prettier**: Consistent code formatting
+- **TypeScript**: Strict mode enabled
+
+## 🎨 Design System
+
+The app includes a comprehensive design system:
+- **Colors**: Centralized color palette
+- **Typography**: Consistent font sizes and weights
+- **Spacing**: 4px grid system
+
+## 🔍 Key Features Implementation
+
+### State Management
+
+- **Redux Toolkit**: For global state (auth, user profile)
+- **React Query**: For server state (API data, caching)
+
+### API Layer
+
+- **Axios**: Configured with interceptors
+- **Error Handling**: Centralized error handling
+- **Request/Response Transformation**: Automatic data transformation
+
+### Navigation
+
+- **Type-Safe**: Full TypeScript support
+- **Stack Navigation**: For modal screens
+- **Tab Navigation**: For main app sections
+
+## 📚 Additional Resources
+
+- [React Native Documentation](https://reactnative.dev/)
+- [React Navigation](https://reactnavigation.org/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
+- [React Query](https://tanstack.com/query/latest)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+
+## 🤝 Contributing
+
+This is a demo project showcasing production-ready architecture. For production use:
+
+1. Replace placeholder API endpoints
+2. Configure Sentry DSN
+3. Set up Firebase Crashlytics
+4. Configure CodePush deployment keys
+5. Add proper authentication
+6. Implement proper error boundaries
+7. Add analytics tracking
+8. Configure environment variables
+
+## 📄 License
+
+This project is for demonstration purposes.
+
+## 👨‍💻 Architecture Decisions
+
+### Why Feature-Based Architecture?
+
+- **Scalability**: Easy to add/remove features
+- **Maintainability**: Clear separation of concerns
+- **Team Collaboration**: Teams can work on features independently
+- **Code Organization**: Related code stays together
+
+### Why Redux Toolkit + React Query?
+
+- **Redux Toolkit**: For global, cross-feature state (auth, user)
+- **React Query**: For server state, caching, and synchronization
+- **Separation**: Clear distinction between client and server state
+
+### Performance First
+
+- All components optimized with React.memo
+- Callbacks memoized with useCallback
+- Computed values memoized with useMemo
+- FlatList optimized for large lists
+- Images optimized with FastImage
+
+---
+
+Built with ❤️ using React Native and TypeScript

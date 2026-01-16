@@ -1,45 +1,56 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * Travel App - Production Ready React Native App
+ * Feature-based modular architecture with TypeScript
  *
  * @format
  */
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import React, { useEffect } from 'react';
+import { StatusBar, useColorScheme } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Provider as ReduxProvider } from 'react-redux';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { store } from './src/shared/store';
+import { queryClient } from './src/shared/store/queryClient';
+import AppNavigator from './src/navigation/AppNavigator';
+import { initializeMonitoring } from './src/shared/services/monitoring';
 
-function App() {
+// CodePush is optional - can be added later when needed
+// For now, app runs without CodePush
+
+/**
+ * Initialize app services
+ */
+const initializeApp = () => {
+  // Initialize monitoring (Sentry, Crashlytics)
+  initializeMonitoring();
+};
+
+function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
+  useEffect(() => {
+    initializeApp();
+  }, []);
+
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <ReduxProvider store={store}>
+          <QueryClientProvider client={queryClient}>
+            <StatusBar
+              barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+              backgroundColor="transparent"
+              translucent
+            />
+            <AppNavigator />
+          </QueryClientProvider>
+        </ReduxProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
+// App export - CodePush can be added later when configured
 export default App;

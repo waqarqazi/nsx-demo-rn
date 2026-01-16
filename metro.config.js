@@ -6,6 +6,18 @@ const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
  *
  * @type {import('@react-native/metro-config').MetroConfig}
  */
-const config = {};
+const config = {
+  resolver: {
+    alias: {
+      '@features': './src/features',
+      '@shared': './src/shared',
+      '@api': './src/shared/api',
+      '@components': './src/shared/components',
+      '@utils': './src/shared/utils',
+      '@theme': './src/shared/theme',
+      '@types': './src/shared/types',
+    },
+  },
+};
 
 module.exports = mergeConfig(getDefaultConfig(__dirname), config);
