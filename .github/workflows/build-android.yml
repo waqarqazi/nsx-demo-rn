@@ -65,7 +65,7 @@ jobs:
           ./gradlew assembleDebug
 
       - name: Upload Debug APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: android-debug-apk-dev
           path: android/app/build/outputs/apk/debug/app-debug.apk
@@ -134,14 +134,14 @@ jobs:
           ./gradlew bundleRelease
 
       - name: Upload Release APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: android-release-apk-production
           path: android/app/build/outputs/apk/release/app-release.apk
           retention-days: 30
 
       - name: Upload Release AAB
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: android-release-aab-production
           path: android/app/build/outputs/bundle/release/app-release.aab
@@ -166,7 +166,7 @@ jobs:
 
       - name: Upload Release Notes
         if: github.ref == 'refs/heads/main'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: release-notes
           path: release_notes.md

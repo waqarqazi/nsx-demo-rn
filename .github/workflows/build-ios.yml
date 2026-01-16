@@ -95,7 +95,7 @@ jobs:
             -exportOptionsPlist ExportOptions.plist || echo "Export options not configured"
 
       - name: Upload Debug IPA
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ios-debug-ipa-dev
           path: ios/build/export/*.ipa
@@ -200,7 +200,7 @@ jobs:
             -exportOptionsPlist ExportOptions.plist || echo "Export options not configured"
 
       - name: Upload Release IPA
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ios-release-ipa-production
           path: ios/build/export/*.ipa
@@ -226,7 +226,7 @@ jobs:
 
       - name: Upload Release Notes
         if: github.ref == 'refs/heads/main'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: release-notes-ios
           path: release_notes.md
