@@ -28,7 +28,7 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     '@typescript-eslint/no-namespace': 'off', // Needed for React Navigation types
-    // '@typescript-eslint/no-var-requires': 'off', // Allow requires but need disable comments
+    '@typescript-eslint/no-var-requires': 'off', // Needed for dynamic requires
     '@typescript-eslint/no-explicit-any': 'warn', // Warn instead of error for any types
     'no-undef': 'off', // Jest globals are handled by jest environment
   },

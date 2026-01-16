@@ -10,14 +10,12 @@ let Sentry: any = null;
 let crashlytics: any = null;
 
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   Sentry = require('@sentry/react-native');
 } catch (error) {
   console.warn('Sentry not available:', error);
 }
 
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   crashlytics = require('@react-native-firebase/crashlytics').default;
 } catch (error) {
   console.warn('Firebase Crashlytics not available:', error);
