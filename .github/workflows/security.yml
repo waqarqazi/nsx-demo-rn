@@ -1,6 +1,10 @@
 name: Security Scan
 
 on:
+  workflow_run:
+    workflows: ['Tests', 'PR Validation']
+    types:
+      - completed
   pull_request:
     branches: [main, dev]
     types: [opened, synchronize, reopened, ready_for_review]
@@ -10,10 +14,11 @@ jobs:
   snyk-sast:
     name: Snyk Security Scan
     runs-on: ubuntu-latest
-    # Run after tests pass
-    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
-    # Optional: Uncomment to wait for tests to pass first
-    # needs: [unit-tests]
+    # Only run if tests passed or on direct PR/workflow_dispatch
+    if: |
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request') ||
+      github.event_name == 'pull_request' ||
+      github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Checkout code
@@ -47,10 +52,11 @@ jobs:
   semgrep-sast:
     name: Semgrep Security Scan
     runs-on: ubuntu-latest
-    # Run after tests pass
-    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
-    # Optional: Uncomment to wait for tests to pass first
-    # needs: [unit-tests]
+    # Only run if tests passed or on direct PR/workflow_dispatch
+    if: |
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request') ||
+      github.event_name == 'pull_request' ||
+      github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Checkout code
