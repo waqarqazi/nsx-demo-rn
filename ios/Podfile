@@ -12,6 +12,9 @@ linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
   use_frameworks! :linkage => linkage.to_sym
+else
+  # Enable modular headers globally for Firebase Swift pods when using static libraries
+  use_modular_headers!
 end
 
 target 'NsxDemo' do
